@@ -73,7 +73,7 @@
       <!-- ======================================================= -->
       <!-- [PERSONALIZACIÓN]: NOMBRE DE LA PERSONA -->
       <!-- ======================================================= -->
-      <h1 class="intro-title">¡Un regalo especial para Azulita! 💛</h1>
+      <h1 class="intro-title">¡Un regalo especial para Azuleta! 💛</h1>
       <p class="intro-subtitle">Alguien que te ama con todo su corazón plantó una sorpresa mágica en tu jardín...</p>
       
       <button class="btn-start" id="btn-start">
@@ -83,7 +83,10 @@
         <span class="btn-sparkles">✨</span>
       </button>
 
-      <p class="intro-date">20 de Septiembre de 2026 • Día de las Flores Amarillas</p>
+      <!-- ======================================================= -->
+      <!-- [PERSONALIZACIÓN]: FECHA -->
+      <!-- ======================================================= -->
+      <p class="intro-date">21 de Septiembre de 2026 • Día de las Flores Amarillas</p>
     </div>
   </section>
 
@@ -95,19 +98,38 @@
       <div class="twilight-glow"></div>
     </div>
 
-    <!-- Contenedor Central: Girasol PvZ y Carta -->
-    <div class="main-content-wrapper">
+    <!-- Mensaje mágico de transición durante los 5 segundos de lluvia de pétalos y hojas -->
+    <div class="blooming-transition-loader" id="blooming-loader">
+      <div class="sprout-icon-anim">🌱</div>
+      <p class="sprout-text">Cultivando tus flores amarillas con mucho amor...</p>
+      <div class="sprout-subtext">✨ Espera un momento, mi Azuletaaa ✨</div>
+    </div>
+
+    <!-- Contenedor Central: Girasol PvZ y Carta (Aparece tras los 5 segundos de lluvia) -->
+    <div class="main-content-wrapper waiting-bloom" id="main-content-wrapper">
       
       <!-- EL GIRASOL ANIMADO DE PLANTS VS ZOMBIES (GIF + EFECTOS) -->
       <div class="sunflower-stage" id="sunflower-stage" title="¡Hazme cosquillas o tócame!">
         <div class="sunflower-speech-bubble" id="speech-bubble">
-          ¡Feliz día, mi Azulita! 🌻💛
+          ¡Feliz día, mi Azuleta! 🌻💛
         </div>
 
-        <div class="sunflower-character" id="sunflower-character">
+        <div class="sunflower-character blooming" id="sunflower-character">
           <!-- GIF OFICIAL DEL GIRASOL PVZ -->
           <img src="sunflower-pvz.gif" alt="Girasol Plants vs Zombies" class="pvz-main-gif" id="sunflower-gif">
           <div class="sunflower-ground-shadow"></div>
+        </div>
+
+        <!-- Pequeños girasoles acompañantes (Mini GIFs) -->
+        <div class="mini-sunflowers-companion">
+          <div class="mini-sunflower-item mini-left" title="¡Mini girasol de amor!">
+            <img src="sunflower-pvz.gif" alt="Mini Girasol" class="mini-sunflower-img">
+            <div class="mini-shadow"></div>
+          </div>
+          <div class="mini-sunflower-item mini-right" title="¡Mini girasol de amor!">
+            <img src="sunflower-pvz.gif" alt="Mini Girasol" class="mini-sunflower-img">
+            <div class="mini-shadow"></div>
+          </div>
         </div>
 
         <!-- Botón interactivo para recolectar Sol -->
@@ -119,23 +141,26 @@
       <!-- TARJETA ROMÁNTICA Y DEDICATORIA -->
       <div class="love-card-container">
         <article class="love-card">
-          <div class="card-ribbon">🌻 20 de Septiembre de 2026 🌻</div>
+          <!-- ======================================================= -->
+          <!-- [PERSONALIZACIÓN]: FECHA DE LA CINTA -->
+          <!-- ======================================================= -->
+          <div class="card-ribbon">🌻 21 de Septiembre de 2026 🌻</div>
           
           <!-- ======================================================= -->
           <!-- [PERSONALIZACIÓN]: TÍTULO Y TEXTOS DE LA CARTA -->
           <!-- ======================================================= -->
-          <h2 class="card-main-title">Para mi hermosa Azulita 💛</h2>
+          <h2 class="card-main-title">Para mi hermosa Azuleta 💛</h2>
           
           <div class="card-quote-box">
             <p class="quote-text">
-              "Dicen que regalar flores amarillas es una promesa de amor, luz y alegría para siempre..."
+              "Dicen que regalar flores amarillas cada 21 de septiembre es una promesa de amor, luz y alegría para siempre..."
             </p>
           </div>
 
           <!-- Mensaje Romántico Personalizado PvZ -->
           <div class="card-body-text">
             <p>
-              ¡Feliz día de las Flores Amarillas, mi querida Azulita! 🌻💛
+              ¡Feliz día de las Flores Amarillas, mi querida Azuletaaa! 🌻💛
             </p>
             <p>
               Así como este girasol siempre busca la luz del sol para sonreír, mi corazón siempre te busca a ti. Eres mi lugar favorito, mi motivo de alegría y mi paz.
@@ -146,18 +171,35 @@
           </div>
 
           <!-- ======================================================= -->
+          <!-- [ESPECIAL]: HOMENAJE A AMOR AMARILLO (GUSTAVO CERATI) -->
+          <!-- ======================================================= -->
+          <div class="cerati-tribute-card">
+            <div class="cerati-badge">🎶 Amor Amarillo 💛</div>
+            <div class="cerati-content">
+              <div class="cerati-image-frame">
+                <img src="cerati1.jpg" alt="Gustavo Cerati - Amor Amarillo" class="cerati-photo">
+              </div>
+              <div class="cerati-lyric-box">
+                <p class="cerati-lyric-text">
+                  "No dejaré que seas fría,<br>yo podría calentarte..."
+                </p>
+                <span class="cerati-song-credit">— Gustavo Cerati</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ======================================================= -->
           <!-- [PERSONALIZACIÓN]: FOTO DE USTEDES DOS -->
-          <!-- Si guardas una foto llamada 'foto.jpg' en esta carpeta, -->
-          <!-- aparecerá aquí automáticamente. Si no, muestra el icono. -->
+          <!-- Solo guarda tu imagen con el nombre 'foto.jpg' en esta carpeta -->
           <!-- ======================================================= -->
           <div class="couple-photo-frame">
             <div class="photo-placeholder" id="photo-container" title="Coloca una imagen llamada 'foto.jpg' en esta carpeta">
-              <img src="foto.jpg" alt="Azulita y Miau" class="user-couple-img" id="user-couple-img"
+              <img src="foto.jpg" alt="Azuleta y Miau" class="user-couple-img" id="user-couple-img"
                    onerror="this.style.display='none'; document.getElementById('photo-fallback').style.display='flex';">
               
               <div class="photo-inner" id="photo-fallback">
                 <div class="photo-icon">📸</div>
-                <div class="photo-text">Azulita & Miau 💛</div>
+                <div class="photo-text">Azuleta & Miau 💛</div>
                 <div class="photo-sub">¡Juntos por siempre!</div>
               </div>
             </div>
@@ -169,8 +211,17 @@
             <button class="action-btn btn-petals" id="btn-flower-rain">
               <span>🌻 Lluvia de Flores</span>
             </button>
-            <button class="action-btn btn-secret" id="btn-secret-letter">
-              <span>💌 Razones por las que te amo</span>
+            
+            <!-- Botón bloqueado inicialmente hasta alcanzar 500 soles de amor -->
+            <button class="action-btn btn-secret locked" id="btn-secret-letter" title="Junta 500 soles para desbloquear este secreto de amor">
+              <div class="btn-lock-content">
+                <span class="lock-icon" id="secret-lock-icon">🔒</span>
+                <span class="btn-text-main" id="secret-btn-text">Razones de amor</span>
+                <span class="sun-cost-badge" id="secret-cost-badge">50/500 ☀️</span>
+              </div>
+              <div class="sun-progress-track">
+                <div class="sun-progress-bar" id="sun-progress-bar" style="width: 10%;"></div>
+              </div>
             </button>
           </div>
 
@@ -179,34 +230,39 @@
           <!-- ======================================================= -->
           <div class="card-signature">
             <p>Con todo mi amor,</p>
-            <span class="signature-name">De: MIAU (RLC) 🐱💛</span>
+            <span class="signature-name">De: MIAU(RIC)</span>
           </div>
         </article>
       </div>
 
     </div>
 
-    <!-- MODAL DE RAZONES DE AMOR / MENSAJE SECRETO -->
+    <!-- MODAL DE RAZONES DE AMOR / MENSAJE SECRETO (DESBLOQUEABLE A LOS 500 SOLES) -->
     <div class="secret-modal-backdrop" id="secret-modal">
       <div class="secret-modal-box">
         <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+        
+        <!-- Banner de trofeo por alcanzar los 500 soles -->
+        <div class="unlocked-trophy-banner" id="unlocked-banner">
+          🏆 ¡500 SOLES DE AMOR ALCANZADOS! 💛
+        </div>
+
         <div class="modal-sun-header">☀️ 🌻 ☀️</div>
-        <h3 class="modal-title">Razones por las que Azulita es mi persona favorita:</h3>
+        <h3 class="modal-title">Razones por las que Azuleta es mi persona favorita:</h3>
         
         <!-- ======================================================= -->
         <!-- [PERSONALIZACIÓN]: LISTA DE RAZONES -->
-        <!-- Puedes editar, agregar o quitar frases aquí -->
         <!-- ======================================================= -->
         <ul class="reasons-list" id="reasons-list">
-          <li>✨ <strong>Tu sonrisa, mi Azulita:</strong> Es capaz de iluminar hasta el día más nublado.</li>
+          <li>✨ <strong>Tu sonrisa, mi Azuletaaa:</strong> Es capaz de iluminar hasta el día más nublado.</li>
           <li>🌻 <strong>Tu compañía:</strong> Cada momento a tu lado hace que la vida sea más bonita.</li>
-          <li>💛 <strong>Tu ternura:</strong> La forma en que me miras y me haces sentir la persona más afortunada.</li>
-          <li>🌱 <strong>Juntos siempre:</strong> No hay obstáculo (ni horda de zombies) que no podamos vencer si estamos juntos.</li>
+          <li>💛 <strong>Tu ternura:</strong> La forma en que me miras.</li>
+          <li>🌱 <strong>Tu voz al despertar</strong> No hay obstáculo (ni horda de zombies) que no podamos vencer si estamos juntos y al escuchar tu voz al despertar es mi forma de perder.</li>
           <li>🌟 <strong>Eres mi sol:</strong> Porque la vida es mil veces más brillante desde que estás tú.</li>
         </ul>
 
         <div class="modal-footer">
-          <button class="modal-heart-btn" id="modal-love-btn">¡Miau te ama con todo su ser! 🐱💛</button>
+            <button class="modal-heart-btn" id="modal-love-btn">¡Miau te ama (yo p) a su manera, Azuleta! 🐱💛</button>
         </div>
       </div>
     </div>

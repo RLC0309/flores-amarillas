@@ -52,7 +52,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 10;
+  z-index: 75;
 }
 
 /* ==========================================================================
@@ -235,7 +235,19 @@ html, body {
   padding: 40px 30px;
   text-align: center;
   box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255, 215, 0, 0.2);
-  animation: floatCard 4s ease-in-out infinite alternate;
+  animation: introCardFadeIn 1.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s backwards,
+             floatCard 4s ease-in-out 3.1s infinite alternate;
+}
+
+@keyframes introCardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes floatCard {
@@ -442,6 +454,62 @@ html, body {
   background: radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.12) 0%, rgba(46, 125, 50, 0.15) 45%, transparent 80%);
 }
 
+/* ==========================================================================
+   MENSAJE MÁGICO DE TRANSICIÓN (5 SEGUNDOS DE LLUVIA DE PÉTALOS Y HOJAS)
+   ========================================================================== */
+.blooming-transition-loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 45;
+  pointer-events: none;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  max-width: 90%;
+  width: 480px;
+  background: rgba(15, 25, 35, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 32px 26px;
+  border-radius: 28px;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.25);
+}
+
+.blooming-transition-loader.fade-out {
+  opacity: 0;
+  transform: translate(-50%, -60%) scale(0.9);
+}
+
+.sprout-icon-anim {
+  font-size: 3.4rem;
+  margin-bottom: 12px;
+  animation: sproutBounce 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes sproutBounce {
+  0% { transform: scale(0.9) rotate(-8deg); }
+  100% { transform: scale(1.18) rotate(8deg); }
+}
+
+.sprout-text {
+  font-family: var(--font-romantic);
+  font-size: 1.65rem;
+  color: var(--primary-yellow);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.sprout-subtext {
+  font-family: var(--font-cute);
+  font-size: 1.05rem;
+  color: #ECEFF1;
+  letter-spacing: 1px;
+}
+
+/* El contenido principal del jardín permanece oculto durante los 5s de lluvia inicial */
 .main-content-wrapper {
   position: relative;
   z-index: 30;
@@ -453,6 +521,19 @@ html, body {
   max-width: 1200px;
   width: 100%;
   margin: auto;
+  transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-content-wrapper.waiting-bloom {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(40px);
+}
+
+.main-content-wrapper.revealed {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 /* ==========================================================================
@@ -511,11 +592,18 @@ html, body {
   justify-content: center;
   position: relative;
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center bottom;
+  animation: pvzContinuousDance 2.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  transition: filter 0.3s;
+}
+
+.sunflower-character.blooming {
+  animation: sunflowerSproutIn 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+             pvzContinuousDance 2.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) 1.3s infinite;
 }
 
 .sunflower-character:hover {
-  transform: scale(1.06);
+  filter: brightness(1.08);
 }
 
 .sunflower-character:active {
@@ -527,10 +615,11 @@ html, body {
   height: auto;
   max-height: 260px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 25px rgba(255, 215, 0, 0.4)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 10px 25px rgba(255, 215, 0, 0.45)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
   user-select: none;
   -webkit-user-drag: none;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: pvzGifBreathe 2.4s ease-in-out infinite;
+  transform-origin: center bottom;
 }
 
 .sunflower-ground-shadow {
@@ -539,6 +628,147 @@ html, body {
   background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.6) 0%, transparent 75%);
   margin-top: -10px;
   border-radius: 50%;
+  animation: shadowScale 2.4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   PEQUEÑOS GIRASOLES ACOMPAÑANTES (MINI GIFS)
+   ========================================================================== */
+.mini-sunflowers-companion {
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  pointer-events: none;
+  z-index: 35;
+}
+
+.mini-sunflower-item {
+  position: relative;
+  width: 75px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mini-sunflower-item.mini-left {
+  animation: miniSwayLeft 2s ease-in-out infinite alternate;
+}
+
+.mini-sunflower-item.mini-right {
+  animation: miniSwayRight 2.2s ease-in-out infinite alternate 0.4s;
+}
+
+.mini-sunflower-item:hover {
+  transform: scale(1.2) translateY(-6px);
+}
+
+.mini-sunflower-img {
+  width: 65px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(255, 215, 0, 0.5));
+}
+
+.mini-shadow {
+  width: 45px;
+  height: 10px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, transparent 75%);
+  border-radius: 50%;
+}
+
+/* Mini girasoles flotantes por la pantalla */
+.floating-mini-sunflower {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 60;
+  user-select: none;
+  filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+  animation: floatMiniGif 6s ease-in-out infinite alternate;
+  transition: transform 0.2s;
+}
+
+.floating-mini-sunflower:hover {
+  transform: scale(1.25) rotate(15deg);
+}
+
+.floating-mini-sunflower img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes floatMiniGif {
+  0% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-20px) rotate(6deg); }
+  100% { transform: translateY(0) rotate(-6deg); }
+}
+
+@keyframes miniSwayLeft {
+  0% { transform: rotate(-8deg) scale(0.95); }
+  100% { transform: rotate(8deg) scale(1.05); }
+}
+
+@keyframes miniSwayRight {
+  0% { transform: rotate(8deg) scale(1.05); }
+  100% { transform: rotate(-8deg) scale(0.95); }
+}
+
+@keyframes sunflowerSproutIn {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.15);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1.15);
+  }
+  80% {
+    transform: translateY(6px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pvzContinuousDance {
+  0% {
+    transform: rotate(0deg) translateY(0) scale(1);
+  }
+  25% {
+    transform: rotate(-6deg) translateY(-8px) scale(1.03, 0.98);
+  }
+  50% {
+    transform: rotate(0deg) translateY(2px) scale(0.98, 1.02);
+  }
+  75% {
+    transform: rotate(6deg) translateY(-8px) scale(1.03, 0.98);
+  }
+  100% {
+    transform: rotate(0deg) translateY(0) scale(1);
+  }
+}
+
+@keyframes pvzGifBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04, 0.98); }
+}
+
+@keyframes shadowScale {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(0.85); opacity: 0.4; }
 }
 
 .sunflower-svg {
@@ -747,6 +977,82 @@ html, body {
   font-size: 1.05rem;
 }
 
+/* ==========================================================================
+   HOMENAJE A AMOR AMARILLO (GUSTAVO CERATI)
+   ========================================================================== */
+.cerati-tribute-card {
+  background: linear-gradient(135deg, rgba(255, 214, 0, 0.12), rgba(255, 145, 0, 0.08));
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  border-radius: 20px;
+  padding: 16px 18px;
+  margin: 20px 0 25px 0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255, 215, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cerati-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #FFD600, #FF9100);
+  color: #3E2723;
+  font-family: var(--font-cute);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(255, 145, 0, 0.4);
+}
+
+.cerati-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cerati-image-frame {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  border: 3px solid #FFD600;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cerati-image-frame:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.cerati-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cerati-lyric-box {
+  flex: 1;
+}
+
+.cerati-lyric-text {
+  font-family: var(--font-romantic);
+  font-size: 1.28rem;
+  color: #FFF9C4;
+  line-height: 1.4;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  margin-bottom: 4px;
+}
+
+.cerati-song-credit {
+  font-family: var(--font-cute);
+  font-size: 0.88rem;
+  color: #FFD54F;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 /* Marco de Foto Romántica */
 .couple-photo-frame {
   position: relative;
@@ -848,6 +1154,107 @@ html, body {
   background: linear-gradient(135deg, #EC407A, #D81B60);
   color: #FFF;
   box-shadow: 0 6px 16px rgba(216, 27, 96, 0.4);
+  flex-direction: column;
+  padding: 10px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-lock-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.sun-cost-badge {
+  font-size: 0.78rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: #FFEB3B;
+  font-weight: bold;
+}
+
+.sun-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sun-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD600, #FF6F00);
+  border-radius: 4px;
+  transition: width 0.4s ease-out;
+  box-shadow: 0 0 8px rgba(255, 214, 0, 0.6);
+}
+
+/* Estado bloqueado del botón (Requiere 500 soles) */
+.btn-secret.locked {
+  background: linear-gradient(135deg, #37474F, #212121);
+  border-color: #78909C;
+  color: #CFD8DC;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  filter: grayscale(0.2);
+}
+
+.btn-secret.locked:hover {
+  border-color: #FFD600;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-secret.locked.shaking {
+  animation: lockShake 0.45s ease-in-out;
+}
+
+@keyframes lockShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px) rotate(-2deg); }
+  40%, 80% { transform: translateX(6px) rotate(2deg); }
+}
+
+/* Estado desbloqueado triunfal (Al alcanzar 500 soles) */
+.btn-secret.unlocked {
+  background: linear-gradient(135deg, #EC407A, #D81B60);
+  border-color: #FFEB3B;
+  color: #FFF;
+  box-shadow: 0 0 25px rgba(255, 235, 59, 0.8), 0 6px 20px rgba(216, 27, 96, 0.5);
+  animation: unlockPulse 1.4s infinite alternate;
+}
+
+@keyframes unlockPulse {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 235, 59, 0.5); }
+  100% { transform: scale(1.05); box-shadow: 0 0 32px rgba(255, 235, 59, 0.95); }
+}
+
+/* Banner de trofeo en el modal cuando se desbloquea */
+.unlocked-trophy-banner {
+  background: linear-gradient(90deg, #FFD600, #FF6F00, #FFD600);
+  color: #3E2723;
+  font-family: var(--font-cute);
+  font-weight: 900;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(255, 145, 0, 0.5);
+  animation: trophyGlow 2s infinite alternate;
+}
+
+@keyframes trophyGlow {
+  0% { transform: scale(0.98); filter: brightness(1); }
+  100% { transform: scale(1.02); filter: brightness(1.15); }
 }
 
 .action-btn:hover {

@@ -1,16 +1,16 @@
-# 🌻 Flores Amarillas para Ti 💛 (Edición Especial Plantas vs Zombies)
+# 🌻 Flores Amarillas para Azuleta 💛 (Edición Especial Plantas vs Zombies)
 
-Un proyecto web interactivo, romántico y animado diseñado para sorprender a tu novia en el **Día de las Flores Amarillas** (20-21 de Septiembre).
+Un proyecto web interactivo, romántico y animado diseñado para sorprender a **Azuleta** en el **Día de las Flores Amarillas** (21 de Septiembre).
 
 Incluye:
-- **Girasol de Plants vs. Zombies** animado en SVG con su clásico y tierno baile rítmico.
-- Canción oficial **"Zombies on Your Lawn"** de **Laura Shigihara** integrada.
-- **Soles dorados interactivos** que caen y se pueden recolectar (hacen sonido alegre de `+50 Amor 💛`).
-- **Lluvia suave de pétalos amarillos** con física de viento en HTML5 Canvas.
-- **Tarjeta romántica personalizable** con efecto de cristal (*glassmorphism*) y frases de amor.
-- **Espacio para foto de ustedes** estilo Polaroid.
-- Modal interactivo con **"Razones por las que te amo"**.
-- 100% responsivo (se ve increíble en celulares al abrirlo desde WhatsApp).
+- **Girasol de Plants vs. Zombies (GIF oficial)** bailando continuamente y hablando con frases de amor.
+- Canción oficial **"Zombies on Your Lawn"** de **Laura Shigihara** que suena al entrar a la página.
+- **Soles dorados y pequeños girasoles interactivos** que suman puntos de amor.
+- **Lluvia de pétalos y hojas cayendo** en el cielo nocturno con 5 segundos de animación cinematográfica al abrir la sorpresa.
+- **Mecánica de juego PvZ:** El botón de "Razones de amor" se desbloquea al juntar **500 Soles** con una fanfarria triunfal y confeti.
+- **Tarjeta romántica personalizada para Azuleta & Miau (RLC)** con fecha del **21 de Septiembre de 2026**.
+- **Soporte automático para tu foto de pareja**.
+- 100% responsivo para celulares y listo para compartir por WhatsApp.
 
 ---
 
@@ -18,64 +18,88 @@ Incluye:
 
 1. Abre la carpeta del proyecto:
    `c:\Users\ricardo.izaguirre\Documents\flores amarillas test`
-2. Haz doble clic sobre el archivo **`index.html`**. Se abrirá directamente en tu navegador (Chrome, Edge, Firefox, Safari).
+2. Haz doble clic sobre el archivo **`index.html`**. Se abrirá en tu navegador favorito.
 3. ¡Haz clic en **"¡Toca para abrir tu sorpresa!"** y disfruta la magia!
+
+---
+
+## 📸 Cómo Poner la Foto (Súper Fácil, Sin Tocar Código)
+
+1. Elige una foto bonita de ustedes dos.
+2. Cópiala en esta misma carpeta (`flores amarillas test`).
+3. Renómbrala exactamente a: **`foto.jpg`**.
+4. ¡Listo! El código la detecta automáticamente y la muestra ajustada dentro del marco Polaroid. *(Si no hay foto, muestra el diseño de cámara por defecto).*
+
+---
+
+## ✏️ Dónde y Cómo Cambiar los Textos
+
+### 1. En [index.html](file:///c:/Users/ricardo.izaguirre/Documents/flores%20amarillas%20test/index.html):
+
+- **Nombre en la pantalla de bienvenida (Línea ~76):**
+  ```html
+  <h1 class="intro-title">¡Un regalo especial para Azuleta! 💛</h1>
+  ```
+
+- **Fecha (Línea ~86 y Línea ~137):**
+  ```html
+  <p class="intro-date">21 de Septiembre de 2026 • Día de las Flores Amarillas</p>
+  <div class="card-ribbon">🌻 21 de Septiembre de 2026 🌻</div>
+  ```
+
+- **Título de la Carta (Línea ~141):**
+  ```html
+  <h2 class="card-main-title">Para mi hermosa Azuleta 💛</h2>
+  ```
+
+- **Mensaje de amor de la carta (Líneas ~150-165):**
+  ```html
+  <p>¡Feliz día de las Flores Amarillas, mi querida Azuletaaa! 🌻💛</p>
+  <p>Así como este girasol siempre busca la luz del sol para sonreír...</p>
+  ```
+
+- **Firma (Línea ~205):**
+  ```html
+  <span class="signature-name">De: MIAU (RLC) 🐱💛</span>
+  ```
+
+- **Lista de razones de amor en el modal secreto (Líneas ~225-240):**
+  ```html
+  <ul class="reasons-list" id="reasons-list">
+    <li>✨ <strong>Tu sonrisa, mi Azuletaaa:</strong> Es capaz de iluminar hasta el día más nublado.</li>
+    <li>🌻 <strong>Tu compañía:</strong> Cada momento a tu lado hace que la vida sea más bonita.</li>
+    ...
+  </ul>
+  ```
+
+---
+
+### 2. En [script.js](file:///c:/Users/ricardo.izaguirre/Documents/flores%20amarillas%20test/script.js):
+
+- **Frases que dice el girasol al tocarlo o pedirle sol (Líneas ~45-53):**
+  ```javascript
+  const sunflowerPhrases = [
+    "¡Feliz día, mi hermosa Azuleta! 🌻💛",
+    "¡Eres el sol de Miau! ☀️🐱",
+    "¡Te amo con todo mi ser, Azuletaaa! 💛",
+    "¡MIAU siempre protegerá tu jardín! 🧟‍♂️🌱",
+    "¡Tu sonrisa ilumina mi mundo! ✨",
+    "¡Juntos por siempre, mi amor! 💖",
+    "¡Flores amarillas hoy y siempre para ti! 🌼"
+  ];
+  ```
 
 ---
 
 ## 🌐 Cómo Publicarlo GRATIS para Enviárselo por WhatsApp
 
-Tienes varias opciones súper sencillas para tener un enlace público gratuito (por ejemplo `https://tu-usuario.github.io/flores-amarillas`):
-
-### Opción 1: GitHub Pages (Recomendado y 100% Gratis)
-
-1. Entra a [github.com](https://github.com) e inicia sesión (o crea una cuenta gratuita si no tienes).
-2. Haz clic en el botón verde **"New"** (Nuevo Repositorio).
-3. Ponle de nombre al repositorio algo bonito, por ejemplo: `flores-amarillas` o `para-ti`.
-4. Asegúrate de marcarlo como **Public** (Público).
-5. Sube los archivos de esta carpeta:
-   - `index.html`
-   - `style.css`
-   - `script.js`
-   - La carpeta `audio/` con la canción `zombies-on-your-lawn.mp3`
-   *(Si usas la web de GitHub, puedes arrastrar y soltar todos los archivos directamente con la opción "uploading an existing file")*.
-6. Una vez subidos los archivos:
-   - Ve a la pestaña **Settings** (Configuración) de tu repositorio.
-   - En el menú lateral izquierdo, haz clic en **Pages**.
-   - En **Branch**, selecciona `main` (o `master`) y la carpeta `/ (root)`, luego pulsa **Save**.
-7. ¡Listo! En 1 minuto GitHub te dará un enlace como:
-   `https://tu-usuario.github.io/flores-amarillas/`
-   Ese enlace se lo puedes enviar por WhatsApp y ella podrá abrirlo desde su teléfono.
-
----
-
-### Opción 2: Netlify Drop (La más rápida - En 1 minuto sin configurar nada)
-
+### Opción 1: Netlify Drop (La más rápida - En 30 segundos sin configurar nada)
 1. Entra a [app.netlify.com/drop](https://app.netlify.com/drop).
 2. Arrastra la carpeta completa `flores amarillas test` hacia el recuadro que dice *"Drag and drop your site folder here"*.
-3. En 5 segundos se publicará tu página y te dará un enlace instantáneo para compartir.
+3. En 5 segundos se publicará y te dará un enlace para enviárselo por WhatsApp.
 
----
-
-## ✏️ Cómo Personalizar el Mensaje y la Foto
-
-### 1. Cambiar los textos o dedicatoria:
-Abre el archivo [index.html](file:///c:/Users/ricardo.izaguirre/Documents/flores%20amarillas%20test/index.html) con el Bloc de notas o tu editor de código favorito y busca la sección:
-```html
-<h2 class="card-main-title">Para la persona que ilumina mis días 💛</h2>
-```
-Ahí puedes poner su nombre o cambiar el mensaje por tus propias palabras.
-
-### 2. Agregar una foto juntos:
-Si quieres que aparezca su foto en el recuadro polaroid:
-1. Guarda tu foto en esta misma carpeta con el nombre `foto.jpg`.
-2. En [index.html](file:///c:/Users/ricardo.izaguirre/Documents/flores%20amarillas%20test/index.html), busca el bloque `<div class="photo-placeholder" id="photo-container">` y reemplázalo por:
-   ```html
-   <img src="foto.jpg" alt="Nosotros" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-   ```
-
----
-
-## 🎵 Créditos
-- Canción: *"Zombies on Your Lawn"* compuesta e interpretada por **Laura Shigihara** (Plants vs. Zombies OST).
-- Personaje: Girasol (*Sunflower*) de Plants vs. Zombies (PopCap Games / EA).
+### Opción 2: GitHub Pages
+1. Crea un nuevo repositorio en [github.com](https://github.com) llamado `flores-amarillas` (Público).
+2. Sube los archivos (`index.html`, `style.css`, `script.js`, `sunflower-pvz.gif`, `audio/`).
+3. En **Settings > Pages**, elige la rama `main` y guarda.
+4. ¡Te dará tu enlace web gratuito en 1 minuto!

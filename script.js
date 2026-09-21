@@ -18,14 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const spawnSunBtn = document.getElementById('spawn-sun-btn');
   const btnFlowerRain = document.getElementById('btn-flower-rain');
   const btnSecretLetter = document.getElementById('btn-secret-letter');
+  const secretLockIcon = document.getElementById('secret-lock-icon');
+  const secretBtnText = document.getElementById('secret-btn-text');
+  const secretCostBadge = document.getElementById('secret-cost-badge');
+  const sunProgressBar = document.getElementById('sun-progress-bar');
+  const unlockedBanner = document.getElementById('unlocked-banner');
   const secretModal = document.getElementById('secret-modal');
   const modalCloseBtn = document.getElementById('modal-close-btn');
   const modalLoveBtn = document.getElementById('modal-love-btn');
+  const bloomingLoader = document.getElementById('blooming-loader');
+  const mainContentWrapper = document.getElementById('main-content-wrapper');
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
 
-  // Estado
+  // Estado del juego / regalo
   let sunScore = 50;
+  const UNLOCK_GOAL = 500;
+  let isSecretUnlocked = false;
   let isMusicPlaying = false;
   let audioContext = null;
 
@@ -34,9 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
      Cada vez que toques al girasol o pidas sol, dirá una de estas frases:
      ========================================================================= */
   const sunflowerPhrases = [
-    "¡Feliz día, mi hermosa Azulita! 🌻💛",
+    "¡Feliz día, mi hermosa Azuleta! 🌻💛",
     "¡Eres el sol de Miau! ☀️🐱",
-    "¡Te amo con todo mi ser, Azulita! 💛",
+    "¡Te amo con todo mi ser, Azuletaaa! 💛",
+    "\"No dejaré que seas fría, yo podría calentarte...\" 🎶💛",
     "¡MIAU siempre protegerá tu jardín! 🧟‍♂️🌱",
     "¡Tu sonrisa ilumina mi mundo! ✨",
     "¡Juntos por siempre, mi amor! 💖",
@@ -53,6 +63,42 @@ document.addEventListener('DOMContentLoaded', () => {
       if (AudioCtx) {
         audioContext = new AudioCtx();
       }
+    }
+  }
+
+  // Sonido de fanfarria triunfal al alcanzar 500 soles
+  function playUnlockFanfareSound() {
+    try {
+      initAudioContext();
+      if (!audioContext) return;
+      if (audioContext.state === 'suspended') audioContext.resume();
+
+      const now = audioContext.currentTime;
+      const fanfare = [
+        { freq: 523.25, time: 0, dur: 0.18 },    // C5
+        { freq: 659.25, time: 0.16, dur: 0.18 },  // E5
+        { freq: 783.99, time: 0.32, dur: 0.22 },  // G5
+        { freq: 1046.50, time: 0.52, dur: 0.9 }   // C6
+      ];
+
+      fanfare.forEach(note => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(note.freq, now + note.time);
+
+        gain.gain.setValueAtTime(0.28, now + note.time);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + note.time + note.dur);
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        osc.start(now + note.time);
+        osc.stop(now + note.time + note.dur + 0.05);
+      });
+    } catch (e) {
+      console.warn("Fanfare sound error:", e);
     }
   }
 
@@ -91,21 +137,45 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // CONTROL DE MÚSICA (Laura Shigihara - Zombies on Your Lawn)
+  // CONTROL DE MÚSICA (REPRODUCCIÓN INMEDIATA AL ENTRAR)
   // =========================================================================
   function startMusic() {
     bgMusic.volume = 0.65;
-    bgMusic.play().then(() => {
-      isMusicPlaying = true;
-      musicBtn.classList.add('playing');
-      musicIcon.textContent = '🌻';
-    }).catch(err => {
-      console.log("Autoplay bloqueado por el navegador:", err);
-      isMusicPlaying = false;
-      musicBtn.classList.remove('playing');
-      musicIcon.textContent = '🎵';
-    });
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        isMusicPlaying = true;
+        musicBtn.classList.add('playing');
+        musicIcon.textContent = '🌻';
+      }).catch(err => {
+        console.log("Autoplay restringido por política del navegador. Esperando primera interacción:", err);
+        isMusicPlaying = false;
+        musicBtn.classList.remove('playing');
+        musicIcon.textContent = '🎵';
+
+        // Al primer toque, clic o interacción en cualquier parte de la pantalla, suena inmediatamente
+        const startOnFirstGesture = () => {
+          if (!isMusicPlaying && bgMusic.paused) {
+            bgMusic.play().then(() => {
+              isMusicPlaying = true;
+              musicBtn.classList.add('playing');
+              musicIcon.textContent = '🌻';
+            }).catch(e => console.log(e));
+          }
+          window.removeEventListener('pointerdown', startOnFirstGesture, true);
+          window.removeEventListener('touchstart', startOnFirstGesture, true);
+          window.removeEventListener('click', startOnFirstGesture, true);
+        };
+
+        window.addEventListener('pointerdown', startOnFirstGesture, { capture: true, once: true });
+        window.addEventListener('touchstart', startOnFirstGesture, { capture: true, once: true });
+        window.addEventListener('click', startOnFirstGesture, { capture: true, once: true });
+      });
+    }
   }
+
+  // Intentar reproducir apenas cargue la página
+  startMusic();
 
   function toggleMusic() {
     if (bgMusic.paused) {
@@ -125,14 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
   musicBtn.addEventListener('click', toggleMusic);
 
   // =========================================================================
-  // TRANSICIÓN DE PANTALLAS (INICIO -> JARDÍN)
+  // TRANSICIÓN DE PANTALLAS (5 SEGUNDOS DE LLUVIA MÁGICA DE PÉTALOS Y FLORECIMIENTO)
   // =========================================================================
   btnStart.addEventListener('click', () => {
-    // Iniciar música tras interacción directa del usuario
+    // Iniciar música tras interacción directa del usuario si aún no sonaba
     startMusic();
     initAudioContext();
 
-    // Animación de transición
+    // 1. Desvanecer la pantalla de bienvenida
     introScreen.style.opacity = '0';
     setTimeout(() => {
       introScreen.classList.remove('active');
@@ -141,10 +211,62 @@ document.addEventListener('DOMContentLoaded', () => {
         gardenScreen.style.opacity = '1';
       }, 50);
 
-      // Lanzar lluvia inicial de pétalos y soles de bienvenida
-      burstPetals(window.innerWidth / 2, window.innerHeight / 3, 35);
-      spawnFloatingSun(window.innerWidth * 0.3, window.innerHeight * 0.4);
-      spawnFloatingSun(window.innerWidth * 0.7, window.innerHeight * 0.35);
+      // 2. Durante 5 segundos: lluvia mágica de pétalos y hojas cayendo
+      // Ola 1 (Inmediata)
+      burstPetals(window.innerWidth / 2, window.innerHeight * 0.3, 35);
+      
+      // Ola 2 (a los 1.3s)
+      setTimeout(() => {
+        burstPetals(window.innerWidth * 0.25, window.innerHeight * 0.2, 30);
+        burstPetals(window.innerWidth * 0.75, window.innerHeight * 0.2, 30);
+      }, 1300);
+
+      // Ola 3 (a los 2.6s)
+      setTimeout(() => {
+        burstPetals(window.innerWidth / 2, window.innerHeight * 0.25, 40);
+        spawnFloatingSun(window.innerWidth * 0.3, window.innerHeight * 0.35);
+      }, 2600);
+
+      // Ola 4 (a los 3.8s)
+      setTimeout(() => {
+        burstPetals(window.innerWidth * 0.2, window.innerHeight * 0.3, 25);
+        burstPetals(window.innerWidth * 0.8, window.innerHeight * 0.3, 25);
+        spawnFloatingMiniSunflower(window.innerWidth * 0.5, window.innerHeight * 0.25);
+      }, 3800);
+
+      // 3. A los 5 segundos exactos: revelar el girasol y la carta con animación mágica
+      setTimeout(() => {
+        if (bloomingLoader) {
+          bloomingLoader.classList.add('fade-out');
+        }
+
+        setTimeout(() => {
+          if (bloomingLoader) {
+            bloomingLoader.style.display = 'none';
+          }
+
+          // Revelar el escenario del girasol y la carta de amor
+          if (mainContentWrapper) {
+            mainContentWrapper.classList.remove('waiting-bloom');
+            mainContentWrapper.classList.add('revealed');
+          }
+
+          // Disparar animación de florecimiento del girasol
+          sunflowerChar.classList.remove('blooming');
+          void sunflowerChar.offsetWidth; // forzar reflujo
+          sunflowerChar.classList.add('blooming');
+
+          // Sonido de bienvenida y explosión final de pétalos y soles
+          playSunCollectSound();
+          burstPetals(window.innerWidth / 2, window.innerHeight * 0.4, 45);
+          spawnFloatingSun(window.innerWidth * 0.28, window.innerHeight * 0.38);
+          spawnFloatingSun(window.innerWidth * 0.72, window.innerHeight * 0.38);
+          spawnFloatingMiniSunflower(window.innerWidth * 0.2, window.innerHeight * 0.3);
+          spawnFloatingMiniSunflower(window.innerWidth * 0.8, window.innerHeight * 0.3);
+        }, 500);
+
+      }, 5000); // 5 segundos de espera para que se disfrute la lluvia de hojas/pétalos
+
     }, 700);
   });
 
@@ -171,7 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
       this.angle = Math.random() * Math.PI * 2;
       this.angularSpeed = (Math.random() - 0.5) * 0.05;
       this.opacity = Math.random() * 0.5 + 0.5;
-      this.color = Math.random() > 0.3 ? '#FFD200' : (Math.random() > 0.5 ? '#FFF176' : '#FFAB00');
+      // Paleta combinada de pétalos amarillos y hojitas de jardín
+      const leafPalette = ['#FFD200', '#FFCA28', '#FFEE58', '#9CCC65', '#8BC34A', '#AED581', '#C0CA33', '#FFA000'];
+      this.color = leafPalette[Math.floor(Math.random() * leafPalette.length)];
       this.isBurst = isBurst;
       this.life = isBurst ? 100 : Infinity;
     }
@@ -201,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.rotate(this.angle);
       ctx.globalAlpha = this.opacity * (this.isBurst ? Math.max(0, this.life / 100) : 1);
 
-      // Dibujar forma de pétalo de girasol
+      // Dibujar forma de pétalo / hoja
       ctx.fillStyle = this.color;
       ctx.beginPath();
       ctx.moveTo(0, -this.size);
@@ -209,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.quadraticCurveTo(-this.size * 0.6, 0, 0, -this.size);
       ctx.fill();
 
-      // Brillo del pétalo
+      // Brillo del pétalo / hoja
       ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
       ctx.beginPath();
       ctx.ellipse(0, -this.size * 0.3, this.size * 0.15, this.size * 0.35, 0, 0, Math.PI * 2);
@@ -219,8 +343,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Crear pétalos constantes
-  for (let i = 0; i < 35; i++) {
+  // Crear pétalos y hojas constantes para que se aprecien en todo momento (tanto al inicio como en el jardín)
+  for (let i = 0; i < 65; i++) {
     const p = new PetalParticle(Math.random() * width, Math.random() * height);
     particles.push(p);
   }
@@ -316,12 +440,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 12000);
   }
 
+  // =========================================================================
+  // SISTEMA DE PUNTOS Y DESBLOQUEO DE 500 SOLES
+  // =========================================================================
+  function addSunScore(amount) {
+    sunScore += amount;
+    sunScoreEl.textContent = sunScore;
+
+    // Actualizar la barra de progreso
+    if (sunProgressBar) {
+      const percent = Math.min(100, Math.round((sunScore / UNLOCK_GOAL) * 100));
+      sunProgressBar.style.width = `${percent}%`;
+    }
+
+    if (!isSecretUnlocked) {
+      if (secretCostBadge) {
+        secretCostBadge.textContent = `${sunScore}/${UNLOCK_GOAL} ☀️`;
+      }
+
+      // ¡ALCANZÓ LA META DE 500 SOLES!
+      if (sunScore >= UNLOCK_GOAL) {
+        isSecretUnlocked = true;
+        playUnlockFanfareSound();
+
+        // Desbloquear botón con brillo y animación
+        btnSecretLetter.classList.remove('locked');
+        btnSecretLetter.classList.add('unlocked');
+        if (secretLockIcon) secretLockIcon.textContent = '🔓';
+        if (secretBtnText) secretBtnText.textContent = '¡Razones de amor!';
+        if (secretCostBadge) secretCostBadge.textContent = '¡DESBLOQUEADO! ✨';
+
+        // Celebración masiva de soles y pétalos
+        burstPetals(window.innerWidth / 2, window.innerHeight / 2, 60);
+        spawnFloatingSun(window.innerWidth * 0.25, window.innerHeight * 0.35);
+        spawnFloatingSun(window.innerWidth * 0.75, window.innerHeight * 0.35);
+        spawnFloatingMiniSunflower(window.innerWidth * 0.5, window.innerHeight * 0.3);
+
+        showFeedbackText("🎉 ¡500 SOLES ALCANZADOS! Has desbloqueado el secreto 💛", window.innerWidth / 2, window.innerHeight / 2);
+
+        // Abrir automáticamente el modal tras 1.4 segundos de celebración
+        setTimeout(() => {
+          secretModal.classList.add('active');
+          burstPetals(window.innerWidth / 2, window.innerHeight * 0.3, 40);
+        }, 1400);
+      }
+    }
+  }
+
+  // Inicializar estado de la barra en 50/500
+  addSunScore(0);
+
   function collectSun(element, x, y) {
     playSunCollectSound();
 
-    // Actualizar puntaje
-    sunScore += 50;
-    sunScoreEl.textContent = sunScore;
+    // Sumar 50 soles con control de desbloqueo
+    addSunScore(50);
 
     // Mostrar feedback visual "+50 Amor 💛"
     showFeedbackText("+50 Amor 💛", x + 34, y);
@@ -355,15 +528,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1200);
   }
 
-  // Generar soles periódicamente cada 6-9 segundos
+  // =========================================================================
+  // PEQUEÑOS GIRASOLES FLOTANTES (MINI GIFS)
+  // =========================================================================
+  function spawnFloatingMiniSunflower(customX, customY) {
+    const mini = document.createElement('div');
+    mini.className = 'floating-mini-sunflower';
+    mini.innerHTML = `<img src="sunflower-pvz.gif" alt="Mini Girasol">`;
+
+    const startX = customX !== undefined ? customX : Math.random() * (window.innerWidth - 80) + 40;
+    const startY = customY !== undefined ? customY : Math.random() * (window.innerHeight * 0.4) + 100;
+
+    mini.style.left = `${startX}px`;
+    mini.style.top = `${startY}px`;
+
+    // Tocar un mini girasol para obtener amor y chispas
+    mini.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSunCollectSound();
+      addSunScore(25);
+      burstPetals(startX + 25, startY + 25, 14);
+      showFeedbackText("¡Mini Sol para Azuleta! 🌻💛", startX + 25, startY);
+      mini.style.transform = 'scale(1.4) rotate(25deg)';
+      setTimeout(() => {
+        mini.style.transform = 'scale(0) rotate(180deg)';
+        mini.style.opacity = '0';
+        setTimeout(() => mini.remove(), 350);
+      }, 250);
+    });
+
+    document.body.appendChild(mini);
+
+    // Desaparece suavemente después de 14 segundos si no se recoge
+    setTimeout(() => {
+      if (mini.parentElement) {
+        mini.style.transition = 'opacity 1s, transform 1s';
+        mini.style.opacity = '0';
+        mini.style.transform = 'scale(0.3)';
+        setTimeout(() => mini.remove(), 1000);
+      }
+    }, 14000);
+  }
+
+  // Generar soles periódicamente cada 7.5 segundos
   setInterval(() => {
     if (gardenScreen.classList.contains('active')) {
       spawnFloatingSun();
     }
   }, 7500);
 
+  // Generar pequeños girasoles flotantes periódicamente cada 10 segundos
+  setInterval(() => {
+    if (gardenScreen.classList.contains('active')) {
+      spawnFloatingMiniSunflower();
+    }
+  }, 10000);
+
+  // Interacción con los mini girasoles acompañantes del jardín
+  document.querySelectorAll('.mini-sunflower-item').forEach(mini => {
+    mini.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSunCollectSound();
+      addSunScore(25);
+      const rect = mini.getBoundingClientRect();
+      burstPetals(rect.left + 30, rect.top + 30, 15);
+      showFeedbackText("+25 Amor 💛", rect.left + 30, rect.top);
+      mini.style.transform = 'scale(1.3) translateY(-10px)';
+      setTimeout(() => {
+        mini.style.transform = '';
+      }, 300);
+    });
+  });
+
   // =========================================================================
-  // INTERACCIÓN CON EL GIRASOL
+  // INTERACCIÓN CON EL GIRASOL PRINCIPAL
   // =========================================================================
   function interactWithSunflower() {
     // Cambiar frase del bocadillo
@@ -379,11 +617,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sunY = rect.top + 50;
     spawnFloatingSun(sunX + (Math.random() * 60 - 30), sunY);
 
-    // Animación de rebote rápido en el girasol
+    // Animación de rebote alegre en el girasol
     sunflowerChar.style.transform = 'scale(1.15) rotate(5deg)';
     setTimeout(() => {
       sunflowerChar.style.transform = '';
-    }, 250);
+    }, 280);
 
     burstPetals(rect.left + rect.width / 2, rect.top + 100, 15);
   }
@@ -392,20 +630,38 @@ document.addEventListener('DOMContentLoaded', () => {
   spawnSunBtn.addEventListener('click', interactWithSunflower);
 
   // =========================================================================
-  // BOTONES DE ACCIÓN: LLUVIA DE FLORES Y MENSAJE SECRETO
+  // BOTONES DE ACCIÓN: LLUVIA DE FLORES Y MENSAJE SECRETO (BLOQUEADO/DESBLOQUEABLE)
   // =========================================================================
   btnFlowerRain.addEventListener('click', () => {
-    // Lluvia masiva de pétalos
+    // Lluvia masiva de pétalos, soles y pequeños girasoles
     for (let i = 0; i < 5; i++) {
       setTimeout(() => {
         burstPetals(Math.random() * width, Math.random() * (height * 0.6), 25);
         spawnFloatingSun();
       }, i * 200);
     }
+    // Lanzar pequeños girasoles flotantes adicionales
+    spawnFloatingMiniSunflower(Math.random() * (width * 0.4) + 50, Math.random() * (height * 0.4) + 80);
+    spawnFloatingMiniSunflower(Math.random() * (width * 0.4) + (width * 0.5), Math.random() * (height * 0.4) + 80);
   });
 
-  btnSecretLetter.addEventListener('click', () => {
-    secretModal.classList.add('active');
+  // Botón de razones de amor con verificación de 500 soles
+  btnSecretLetter.addEventListener('click', (e) => {
+    if (!isSecretUnlocked) {
+      const missing = UNLOCK_GOAL - sunScore;
+      
+      // Animación de sacudida indicando bloqueo
+      btnSecretLetter.classList.remove('shaking');
+      void btnSecretLetter.offsetWidth;
+      btnSecretLetter.classList.add('shaking');
+
+      // Mensaje flotante avisando cuántos soles faltan
+      const clickX = e.clientX || window.innerWidth / 2;
+      const clickY = (e.clientY || window.innerHeight / 2) - 40;
+      showFeedbackText(`🔒 ¡Junta 500 soles! Faltan ${missing} ☀️ 💛`, clickX, clickY);
+    } else {
+      secretModal.classList.add('active');
+    }
   });
 
   modalCloseBtn.addEventListener('click', () => {
@@ -421,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
   modalLoveBtn.addEventListener('click', () => {
     secretModal.classList.remove('active');
     burstPetals(width / 2, height / 2, 40);
-    showFeedbackText("¡Miau & Azulita por siempre! 💛🌻", width / 2, height / 2);
+    showFeedbackText("¡Miau & Azuleta por siempre! 💛🌻", width / 2, height / 2);
   });
 
   // Clic en cualquier parte del jardín genera una mini chispa/pétalo
