@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌻 Flores Amarillas para Ti 💛 | Edición Especial PvZ</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Fuentes románticas y divertidas de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Lienzo para partículas, pétalos y soles -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Contenedor de música flotante -->
+  <div class="music-player-container" id="music-player">
+    <button class="music-toggle-btn" id="music-btn" title="Reproducir / Pausar Música">
+      <span class="music-icon" id="music-icon">🎵</span>
+      <span class="music-status-dot"></span>
+    </button>
+    <div class="music-tooltip">Zombies on Your Lawn - Laura Shigihara 🌻</div>
+    <audio id="bg-music" loop preload="auto">
+      <source src="audio/zombies-on-your-lawn.mp3" type="audio/mp3">
+      <!-- Fallback en línea si el archivo local aún no se descarga -->
+      <source src="https://archive.org/download/plants-vs.-zombies-ost-flac/Laura%20Shigihara%20-%20Plants%20vs.%20Zombies%20Original%20Soundtrack/15%20-%20Zombies%20On%20Your%20Lawn.mp3" type="audio/mp3">
+    </audio>
+  </div>
+
+  <!-- Contador de Soles Recolectados (Estilo PvZ) -->
+  <div class="sun-counter-badge" id="sun-counter-badge">
+    <div class="sun-icon-mini">
+      <svg viewBox="0 0 100 100" class="mini-sun-svg">
+        <circle cx="50" cy="50" r="28" fill="#FFEB3B" stroke="#F57F17" stroke-width="4"/>
+        <g stroke="#F57F17" stroke-width="4" stroke-linecap="round">
+          <line x1="50" y1="6" x2="50" y2="18"/>
+          <line x1="50" y1="82" x2="50" y2="94"/>
+          <line x1="6" y1="50" x2="18" y2="50"/>
+          <line x1="82" y1="50" x2="94" y2="50"/>
+          <line x1="19" y1="19" x2="28" y2="28"/>
+          <line x1="72" y1="72" x2="81" y2="81"/>
+          <line x1="19" y1="81" x2="28" y2="72"/>
+          <line x1="72" y1="28" x2="81" y2="19"/>
+        </g>
+        <circle cx="42" cy="45" r="3.5" fill="#3E2723"/>
+        <circle cx="58" cy="45" r="3.5" fill="#3E2723"/>
+        <path d="M 44 55 Q 50 62 56 55" fill="none" stroke="#D84315" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="sun-score" id="sun-score">50</span>
+    <span class="sun-label">Amor</span>
+  </div>
+
+  <!-- PANTALLA 1: SORPRESA INICIAL (Sobre de jardín) -->
+  <section class="screen intro-screen active" id="intro-screen">
+    <div class="intro-card">
+      <div class="card-glow"></div>
+      <div class="seed-packet-icon">
+        <!-- Paquete de Semillas de Girasol PvZ -->
+        <div class="packet-wrapper">
+          <div class="packet-body">
+            <!-- Vista previa con el GIF del girasol -->
+            <img src="sunflower-pvz.gif" alt="Girasol PvZ" class="packet-gif-preview">
+            <div class="packet-cost">50 ☀️</div>
+            <div class="packet-title">GIRASOL</div>
+          </div>
+          <div class="packet-sparkle">✨</div>
+        </div>
+      </div>
+
+      <!-- ======================================================= -->
+      <!-- [PERSONALIZACIÓN]: NOMBRE DE LA PERSONA -->
+      <!-- ======================================================= -->
+      <h1 class="intro-title">¡Un regalo especial para Azulita! 💛</h1>
+      <p class="intro-subtitle">Alguien que te ama con todo su corazón plantó una sorpresa mágica en tu jardín...</p>
+      
+      <button class="btn-start" id="btn-start">
+        <span class="btn-shine"></span>
+        <span class="btn-icon">🌻</span>
+        <span class="btn-text">¡Toca para abrir tu sorpresa!</span>
+        <span class="btn-sparkles">✨</span>
+      </button>
+
+      <p class="intro-date">20 de Septiembre de 2026 • Día de las Flores Amarillas</p>
+    </div>
+  </section>
+
+  <!-- PANTALLA 2: ESCENARIO PRINCIPAL (Jardín interactivo de Flores Amarillas) -->
+  <main class="screen garden-screen" id="garden-screen">
+    
+    <!-- Fondo ambiental suave y sin cortes -->
+    <div class="garden-background">
+      <div class="twilight-glow"></div>
+    </div>
+
+    <!-- Contenedor Central: Girasol PvZ y Carta -->
+    <div class="main-content-wrapper">
+      
+      <!-- EL GIRASOL ANIMADO DE PLANTS VS ZOMBIES (GIF + EFECTOS) -->
+      <div class="sunflower-stage" id="sunflower-stage" title="¡Hazme cosquillas o tócame!">
+        <div class="sunflower-speech-bubble" id="speech-bubble">
+          ¡Feliz día, mi Azulita! 🌻💛
+        </div>
+
+        <div class="sunflower-character" id="sunflower-character">
+          <!-- GIF OFICIAL DEL GIRASOL PVZ -->
+          <img src="sunflower-pvz.gif" alt="Girasol Plants vs Zombies" class="pvz-main-gif" id="sunflower-gif">
+          <div class="sunflower-ground-shadow"></div>
+        </div>
+
+        <!-- Botón interactivo para recolectar Sol -->
+        <button class="sun-spawn-btn" id="spawn-sun-btn">
+          <span>☀️ ¡Dame Sol!</span>
+        </button>
+      </div>
+
+      <!-- TARJETA ROMÁNTICA Y DEDICATORIA -->
+      <div class="love-card-container">
+        <article class="love-card">
+          <div class="card-ribbon">🌻 20 de Septiembre de 2026 🌻</div>
+          
+          <!-- ======================================================= -->
+          <!-- [PERSONALIZACIÓN]: TÍTULO Y TEXTOS DE LA CARTA -->
+          <!-- ======================================================= -->
+          <h2 class="card-main-title">Para mi hermosa Azulita 💛</h2>
+          
+          <div class="card-quote-box">
+            <p class="quote-text">
+              "Dicen que regalar flores amarillas es una promesa de amor, luz y alegría para siempre..."
+            </p>
+          </div>
+
+          <!-- Mensaje Romántico Personalizado PvZ -->
+          <div class="card-body-text">
+            <p>
+              ¡Feliz día de las Flores Amarillas, mi querida Azulita! 🌻💛
+            </p>
+            <p>
+              Así como este girasol siempre busca la luz del sol para sonreír, mi corazón siempre te busca a ti. Eres mi lugar favorito, mi motivo de alegría y mi paz.
+            </p>
+            <p class="pvz-romantic-punchline">
+              ✨ <em>"Aunque el mundo se llene de zombies y días difíciles... ¡yo siempre protegeré tu jardín, cuidaré tu sonrisa y te llenaré de soles de amor!"</em> 🧟‍♂️🌱💛
+            </p>
+          </div>
+
+          <!-- ======================================================= -->
+          <!-- [PERSONALIZACIÓN]: FOTO DE USTEDES DOS -->
+          <!-- Si guardas una foto llamada 'foto.jpg' en esta carpeta, -->
+          <!-- aparecerá aquí automáticamente. Si no, muestra el icono. -->
+          <!-- ======================================================= -->
+          <div class="couple-photo-frame">
+            <div class="photo-placeholder" id="photo-container" title="Coloca una imagen llamada 'foto.jpg' en esta carpeta">
+              <img src="foto.jpg" alt="Azulita y Miau" class="user-couple-img" id="user-couple-img"
+                   onerror="this.style.display='none'; document.getElementById('photo-fallback').style.display='flex';">
+              
+              <div class="photo-inner" id="photo-fallback">
+                <div class="photo-icon">📸</div>
+                <div class="photo-text">Azulita & Miau 💛</div>
+                <div class="photo-sub">¡Juntos por siempre!</div>
+              </div>
+            </div>
+            <div class="photo-tape">🌻</div>
+          </div>
+
+          <!-- Botonera de Acciones Interactivas -->
+          <div class="card-actions">
+            <button class="action-btn btn-petals" id="btn-flower-rain">
+              <span>🌻 Lluvia de Flores</span>
+            </button>
+            <button class="action-btn btn-secret" id="btn-secret-letter">
+              <span>💌 Razones por las que te amo</span>
+            </button>
+          </div>
+
+          <!-- ======================================================= -->
+          <!-- [PERSONALIZACIÓN]: FIRMA DE LA CARTA (MIAU) -->
+          <!-- ======================================================= -->
+          <div class="card-signature">
+            <p>Con todo mi amor,</p>
+            <span class="signature-name">De: MIAU (RLC) 🐱💛</span>
+          </div>
+        </article>
+      </div>
+
+    </div>
+
+    <!-- MODAL DE RAZONES DE AMOR / MENSAJE SECRETO -->
+    <div class="secret-modal-backdrop" id="secret-modal">
+      <div class="secret-modal-box">
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+        <div class="modal-sun-header">☀️ 🌻 ☀️</div>
+        <h3 class="modal-title">Razones por las que Azulita es mi persona favorita:</h3>
+        
+        <!-- ======================================================= -->
+        <!-- [PERSONALIZACIÓN]: LISTA DE RAZONES -->
+        <!-- Puedes editar, agregar o quitar frases aquí -->
+        <!-- ======================================================= -->
+        <ul class="reasons-list" id="reasons-list">
+          <li>✨ <strong>Tu sonrisa, mi Azulita:</strong> Es capaz de iluminar hasta el día más nublado.</li>
+          <li>🌻 <strong>Tu compañía:</strong> Cada momento a tu lado hace que la vida sea más bonita.</li>
+          <li>💛 <strong>Tu ternura:</strong> La forma en que me miras y me haces sentir la persona más afortunada.</li>
+          <li>🌱 <strong>Juntos siempre:</strong> No hay obstáculo (ni horda de zombies) que no podamos vencer si estamos juntos.</li>
+          <li>🌟 <strong>Eres mi sol:</strong> Porque la vida es mil veces más brillante desde que estás tú.</li>
+        </ul>
+
+        <div class="modal-footer">
+          <button class="modal-heart-btn" id="modal-love-btn">¡Miau te ama con todo su ser! 🐱💛</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
