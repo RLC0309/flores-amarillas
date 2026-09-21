@@ -271,10 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // CANVAS DE PARTÍCULAS: PÉTALOS AMARILLOS Y LUCIÉRNAGAS
+  // CANVAS DE PARTÍCULAS: PÉTALOS AMARILLOS Y HOJITAS DE JARDÍN
   // =========================================================================
   let width, height;
   let particles = [];
+  let continuousLeavesActive = false; // Se activará únicamente al completar los 500 girasoles
 
   function resizeCanvas() {
     width = canvas.width = window.innerWidth;
@@ -298,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.color = leafPalette[Math.floor(Math.random() * leafPalette.length)];
       this.isBurst = isBurst;
       this.life = isBurst ? 100 : Infinity;
+      this.dead = false;
     }
 
     update() {
@@ -312,10 +314,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       this.angle += this.angularSpeed;
 
-      // Reaparecer arriba si cae de la pantalla
-      if (!this.isBurst && this.y > height + 20) {
-        this.y = -20;
-        this.x = Math.random() * width;
+      // Reaparecer arriba si cae de la pantalla SOLO si continuousLeavesActive es true
+      if (!this.isBurst) {
+        if (this.y > height + 20) {
+          if (continuousLeavesActive) {
+            this.y = -20;
+            this.x = Math.random() * width;
+          } else {
+            this.dead = true;
+          }
+        }
       }
     }
 
@@ -343,10 +351,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Crear pétalos y hojas constantes para que se aprecien en todo momento (tanto al inicio como en el jardín)
-  for (let i = 0; i < 65; i++) {
-    const p = new PetalParticle(Math.random() * width, Math.random() * height);
-    particles.push(p);
+  // Activa la lluvia continua de hojas y pétalos al llegar a 500 soles (girasoles)
+  function startContinuousLeavesRain() {
+    continuousLeavesActive = true;
+    for (let i = 0; i < 65; i++) {
+      const p = new PetalParticle(Math.random() * width, Math.random() * -height);
+      particles.push(p);
+    }
   }
 
   function burstPetals(originX, originY, count = 25) {
@@ -363,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
       p.update();
       p.draw();
 
-      if (p.isBurst && p.life <= 0) {
+      if ((p.isBurst && p.life <= 0) || p.dead) {
         particles.splice(i, 1);
       }
     }
@@ -469,6 +480,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (secretLockIcon) secretLockIcon.textContent = '🔓';
         if (secretBtnText) secretBtnText.textContent = '¡Razones de amor!';
         if (secretCostBadge) secretCostBadge.textContent = '¡DESBLOQUEADO! ✨';
+
+        // Iniciar la lluvia continua de hojas y pétalos como recompensa especial de los 500 girasoles
+        startContinuousLeavesRain();
 
         // Celebración masiva de soles y pétalos
         burstPetals(window.innerWidth / 2, window.innerHeight / 2, 60);
