@@ -592,6 +592,23 @@ document.addEventListener('DOMContentLoaded', () => {
     burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 20, 'rose');
   });
 
+  // Interacción con los álbumes icónicos de la discoteca
+  document.querySelectorAll('.album-sleeve-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playPickSound();
+      addDays(10);
+      const albumName = card.getAttribute('data-album') || 'Rock Classic';
+      const rect = card.getBoundingClientRect();
+      burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 14, 'rose');
+      showFloatingFeedback(`+10 Días 🖤 ${albumName}`, rect.left + rect.width / 2, rect.top);
+      card.style.transform = 'scale(1.15) rotate(4deg)';
+      setTimeout(() => {
+        card.style.transform = '';
+      }, 250);
+    });
+  });
+
   // Botón "Lluvia de Rosas y Púas"
   btnPunkRain.addEventListener('click', () => {
     playPickSound();
