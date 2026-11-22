@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heidy & Italo • Three Cheers for 365 Days of Sweet Love 🖤🌹</title>
+  <meta name="description" content="Sorpresa especial de 1er Aniversario de matrimonio para Italo de parte de Heidy. Temática Punk, Manchester (La Oroya), Three Cheers for Sweet Revenge y Motorama.">
+
+  <!-- Google Fonts: Gótico, Punk, Máquina de escribir y Caligrafía de amor -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel+Decorative:wght@700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Canvas de partículas: Pétalos de rosas rojas carmesí, confeti negro y chispas punk -->
+  <canvas id="punk-canvas"></canvas>
+
+  <!-- Audio de fondo: Motorama - By Your Side (inicia en la parte cantada: 13s) -->
+  <audio id="bg-music" src="audio/by-your-side.mp3#t=13" preload="auto" loop></audio>
+
+  <!-- Reproductor Flotante Estilo Vinilo Post-Punk -->
+  <div class="music-player-container">
+    <div class="vinyl-record-widget" id="music-vinyl-btn" title="Reproducir / Pausar Motorama">
+      <div class="vinyl-disc" id="vinyl-disc">
+        <div class="vinyl-groove"></div>
+        <div class="vinyl-label">
+          <span class="vinyl-dot"></span>
+        </div>
+      </div>
+      <div class="turntable-arm"></div>
+    </div>
+    <div class="song-info-pill">
+      <span class="song-status-icon" id="music-status-icon">🎵</span>
+      <div class="song-meta">
+        <span class="song-title">By Your Side</span>
+        <span class="song-artist">Motorama • Dialogues</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       PANTALLA 1: INTRODUCCIÓN ESTILO MY CHEMICAL ROMANCE ("THE REVENGE GATE")
+       ========================================================================= -->
+  <section id="intro-screen" class="screen-view active">
+    <div class="intro-overlay"></div>
+    
+    <div class="intro-content">
+      <div class="mcr-badge-top">
+        <span class="cross-icon">†</span> LA OROYA • SYNTH POP • NEW WAVE • POST-PUNK • DARK WAVE • INDIE <span class="cross-icon">†</span>
+      </div>
+
+      <div class="album-logo-box">
+        <h2 class="band-style-logo">MY CHEMICAL ROMANCE STYLE</h2>
+        <h1 class="main-title-gothic">HEIDY &amp; ITALO</h1>
+        <p class="album-subtitle">BODAS DE PAPEL • 365 DAYS OF SWEET LOVE</p>
+      </div>
+
+      <div class="intro-artwork-wrapper">
+        <div class="album-art-frame">
+          <img src="img/mcr-cover.jpg" alt="Three Cheers for Sweet Revenge Cover" class="intro-cover-img">
+          <div class="blood-splatter-accent"></div>
+        </div>
+        <div class="intro-wedding-tag">
+          <span class="wedding-date-label">DESDE EL 22 DE NOVIEMBRE DE 2025 • BODAS DE PAPEL</span>
+          <span class="anniversary-number">365 DÍAS JUNTOS 📜🖤</span>
+        </div>
+      </div>
+
+      <div class="intro-message-preview">
+        <p><em>"Desde las calles de La Oroya, unidos por el synth pop, new wave, post-punk, dark wave e indie... Celebrando nuestras Bodas de Papel con un amor eterno a prueba de todo."</em></p>
+      </div>
+
+      <button id="btn-enter-universe" class="btn-punk-primary">
+        <span class="btn-icon">⚡</span>
+        <span class="btn-text">ENTRAR A NUESTRO ANIVERSARIO</span>
+        <span class="btn-icon">🌹</span>
+      </button>
+
+      <div class="intro-footer-hint">
+        <span>🖤 Toca el botón para encender el tocadiscos con Motorama</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       PANTALLA 2: ESCENARIO INTERACTIVO (THE 365 DAYS STAGE)
+       ========================================================================= -->
+  <section id="stage-screen" class="screen-view">
+    
+    <!-- Barra Superior de Marcador Punk: 0 a 365 Días -->
+    <header class="punk-header-bar">
+      <div class="counter-badge" id="days-counter-badge">
+        <div class="badge-skull-icon">🎸</div>
+        <div class="badge-texts">
+          <div class="badge-title">BODAS DE PAPEL • 1ER AÑO</div>
+          <div class="badge-counter"><span id="days-count">0</span> / 365 DÍAS</div>
+        </div>
+        <div class="badge-status-ring">
+          <span id="badge-lock-status">🔒</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="days-progress-bar" style="width: 0%;"></div>
+        <div class="progress-glare"></div>
+      </div>
+    </header>
+
+    <!-- Transición / Loader de Acorde Inicial -->
+    <div id="stage-loader" class="stage-loader">
+      <div class="loader-cassette">
+        <div class="cassette-tape-spin"></div>
+        <div class="cassette-title">MOTORAMA • BY YOUR SIDE</div>
+      </div>
+      <p class="loader-text">Sintonizando el dial de La Oroya...</p>
+    </div>
+
+    <!-- Contenido Principal: Escenario y Carta de Amor -->
+    <main class="main-stage-container" id="main-stage-content">
+      
+      <!-- Columna Izquierda: Tocadiscos y Galería Interactiva Demolition Lovers -->
+      <section class="stage-turntable-column">
+        
+        <!-- Bocadillo de Frases Punk / Rockeras -->
+        <div class="punk-speech-bubble" id="punk-speech-bubble">
+          ¡Felices Bodas de Papel, mi amor! Toca aquí para soltar púas 🎸📜
+        </div>
+
+        <div class="turntable-interactive-box" id="central-stage-box" title="¡Haz clic para hacer sonar el bajo y generar púas!">
+          <div class="vinyl-stage-disc" id="stage-vinyl-graphic">
+            <div class="vinyl-center-art">
+              <img src="img/foto-punk.jpg" alt="Italo y Heidy Rockers" class="turntable-center-img">
+            </div>
+          </div>
+          <div class="turntable-needle-arm"></div>
+          <div class="sound-wave-rings"></div>
+        </div>
+
+        <div class="stage-sub-info">
+          <div class="tape-label-oroya">⚡ LA OROYA: SYNTH POP • NEW WAVE • POST-PUNK • DARK WAVE • INDIE ⚡</div>
+          <p class="stage-instructions">Haz clic en el tocadiscos o atrapa <strong>púas 🎸</strong>, <strong>rosas 🌹</strong> y <strong>vinilos 📼</strong> para completar los 365 días.</p>
+        </div>
+      </section>
+
+      <!-- Columna Derecha: Carta de Amor Estilo MCR & Botones de Acción -->
+      <section class="stage-letter-column">
+        <article class="punk-letter-card">
+          <div class="card-stencil-header">
+            <span class="mcr-stamp">CHAPTER ONE • BODAS DE PAPEL</span>
+            <span class="date-stamp">22.NOV.2025 ➔ HOY (365 DÍAS)</span>
+          </div>
+
+          <h2 class="letter-main-heading">THREE CHEERS FOR OUR SWEET LOVE</h2>
+          <h3 class="letter-dedication-sub">Para mi esposo y compañero de vida: <strong>Italo</strong> • <em>Bodas de Papel</em> 📜</h3>
+
+          <div class="letter-body-prose">
+            <p>
+              Parece que fue ayer cuando dijimos <em>"Sí, acepto"</em> aquel <strong>22 de noviembre de 2025</strong>. 
+              Hoy celebramos con orgullo nuestras <strong>Bodas de Papel</strong> al cumplir nuestros primeros <strong>365 días juntos</strong>.
+            </p>
+            <p>
+              Dicen que las <em>Bodas de Papel</em> simbolizan una historia que recién comienza a escribirse, 
+              pero en este primer año nosotros ya hemos compuesto una obra de arte: llena de risas, miradas cómplices, 
+              conciertos compartidos y un amor a prueba de todo, caminando juntos con casacas de cuero y el volumen al máximo.
+            </p>
+            <p>
+              Tú y yo sabemos que nuestro amor no es común: tiene la mística única de nuestro querido 
+              <strong>Manchester de La Oroya</strong>, esas tardes y noches vibrando juntos con el 
+              <strong>synth pop</strong>, las guitarras afiladas del <strong>new wave</strong>, 
+              la nostalgia envolvente del <strong>post-punk</strong>, la profundidad del <strong>dark wave</strong> 
+              y la frescura rebelde del <strong>indie</strong>. Esas canciones son la banda sonora de nuestra complicidad. 
+              En un mundo lleno de ruido banal, tú eres mi mejor melodía, mi refugio y mi eterno cómplice.
+            </p>
+          </div>
+
+          <!-- Cuadro Especial de la Canción Motorama: By Your Side con Letra y Significado en Español -->
+          <div class="motorama-quote-box">
+            <div class="motorama-badge">POST-PUNK ANTHEM • MOTORAMA: "BY YOUR SIDE"</div>
+            <blockquote class="motorama-lyric">
+              <em>"Poverty is nothing for you<br>
+              It is nothing for me<br>
+              When I'm by your side...<br>
+              Silver and gold worth nothing for us<br>
+              The only treasure is here, it's us, in our love."</em>
+            </blockquote>
+
+            <div class="motorama-translation-box">
+              <div class="translation-header">
+                <span class="trans-icon">📜</span>
+                <span class="trans-title">Traducción en español:</span>
+              </div>
+              <p class="translation-text">
+                <em>"La pobreza no es nada para ti<br>
+                No es nada para mí<br>
+                Cuando estoy a tu lado...<br>
+                La plata y el oro no valen nada para nosotros<br>
+                El único tesoro está aquí, somos nosotros, en nuestro amor."</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- Marco Doble de Fotos: Boda Oficial y Alma Punk -->
+          <div class="photos-duo-frame">
+            <div class="polaroid-item polaroid-wedding">
+              <div class="polaroid-img-wrapper">
+                <img src="img/foto-boda.jpg" alt="Boda de Italo y Heidy - 22 Noviembre 2025">
+              </div>
+              <p class="polaroid-caption">22.11.2025 • Nuestro Gran Día 💍</p>
+            </div>
+
+            <div class="polaroid-item polaroid-punk">
+              <div class="polaroid-img-wrapper">
+                <img src="img/foto-punk.jpg" alt="Italo y Heidy Rockers con casacas de cuero">
+              </div>
+              <p class="polaroid-caption">Amor con actitud Punk ⚡🕶️</p>
+            </div>
+          </div>
+
+          <!-- Botones de Acción y Desbloqueo de 365 Días -->
+          <div class="stage-actions-row">
+            <button id="btn-punk-rain" class="action-btn btn-rain">
+              <span class="btn-symbol">🌹</span>
+              <span>Lluvia de Rosas y Púas</span>
+            </button>
+
+            <button id="btn-secret-vault" class="action-btn btn-vault locked">
+              <span class="vault-lock-icon" id="vault-lock-icon">🔒</span>
+              <span id="vault-btn-text">Cofre: Bodas de Papel</span>
+              <span class="vault-badge" id="vault-cost-badge">0/365 Días 🎸</span>
+            </button>
+          </div>
+
+          <div class="letter-signature-block">
+            <p class="sig-note">Por siempre a tu lado,</p>
+            <p class="sig-author">Heidy 🖤</p>
+            <span class="sig-date">1er Aniversario • Bodas de Papel 📜</span>
+          </div>
+        </article>
+      </section>
+
+    </main>
+  </section>
+
+  <!-- =========================================================================
+       MODAL FINAL: THE DEMOLITION LOVERS VAULT (DESBLOQUEO AL LLEGAR A 365 DÍAS)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="vault-modal">
+    <div class="modal-box-punk">
+      <button class="modal-close-button" id="modal-close-btn" aria-label="Cerrar ventana">✕</button>
+
+      <div class="modal-header-banner">
+        <div class="mcr-gothic-cross">† † †</div>
+        <h2 class="modal-title">DEMOLITION LOVERS: HEIDY &amp; ITALO</h2>
+        <div class="modal-badge-unlocked">🏆 ¡365 DÍAS • BODAS DE PAPEL! 📜🏆</div>
+      </div>
+
+      <div class="modal-scrollable-body">
+        
+        <!-- Homenaje Comparativo al Álbum Three Cheers -->
+        <div class="mcr-tribute-banner">
+          <div class="mcr-art-side">
+            <img src="img/mcr-cover.jpg" alt="My Chemical Romance Demolition Lovers" class="mcr-thumb">
+          </div>
+          <div class="mcr-quote-side">
+            <p class="mcr-quote-text">
+              <em>"And what's the worst that I can say?<br>
+              Things are better if I stay... with you."</em>
+            </p>
+            <span class="mcr-quote-source">— Three Cheers for Sweet Revenge</span>
+          </div>
+        </div>
+
+        <!-- Carta Secreta Completa de Heidy -->
+        <div class="secret-prose-letter">
+          <h3>¡Felices Bodas de Papel, mi amor y compañero de vida! 📜🖤</h3>
+          <p>
+            Si algo nos ha enseñado la música que tanto nos apasiona, es que las cosas más valiosas 
+            se construyen con alma, autenticidad y pasión sin filtros.
+          </p>
+          <p>
+            Dicen que el primer año de matrimonio son las <strong>Bodas de Papel</strong> porque es la primera página 
+            en blanco que dos personas empiezan a escribir juntos. Pero a tu lado, en estos <strong>365 días</strong>, 
+            ya hemos compuesto una sinfonía entera de complicidad, lealtad y amor indestructible.
+          </p>
+          <p>
+            Desde aquel <strong>22 de noviembre de 2025</strong> en que unimos nuestras vidas, me encanta compartir contigo 
+            las canciones de Motorama, los riffs intensos de My Chemical Romance, nuestras raíces en 
+            <strong>La Oroya</strong> y cada meta que juntos nos proponemos.
+          </p>
+          <p>
+            Gracias por cuidarme, por hacerme reír en los días difíciles, por mirarme con esos ojos cómplices 
+            y por ser ese hombre increíble con el que tengo el honor de caminar. 
+            Este es solo nuestro primer año, el primer acorde de una gira eterna.
+          </p>
+          <p class="final-highlight">
+            <em>"No importa cuántos años pasen ni cuántas tormentas vengan: I will always be by your side."</em>
+          </p>
+        </div>
+
+        <!-- Muestra de fotos estilo pase VIP / Gira con encuadre completo -->
+        <div class="vip-pass-card">
+          <div class="vip-header">TOUR OF OUR LIVES • BODAS DE PAPEL (YEAR 01)</div>
+          <div class="vip-images-grid">
+            <div class="vip-img-box">
+              <div class="vip-img-frame">
+                <img src="img/foto-boda.jpg" alt="Foto Boda Heidy e Italo - 22 Noviembre 2025">
+              </div>
+              <span class="vip-img-title">El "Sí, Acepto" 💍</span>
+              <span class="vip-img-subtitle">22.11.2025 • Boda en La Oroya</span>
+            </div>
+            <div class="vip-img-box">
+              <div class="vip-img-frame">
+                <img src="img/foto-punk.jpg" alt="Foto Cuero Heidy e Italo - Actitud Rockera">
+              </div>
+              <span class="vip-img-title">Nuestra Esencia 🖤⚡</span>
+              <span class="vip-img-subtitle">Casacas de cuero &amp; lentes</span>
+            </div>
+            <div class="vip-img-box">
+              <div class="vip-img-frame">
+                <img src="img/mcr-live.jpg" alt="MCR Demolition Lovers Reference">
+              </div>
+              <span class="vip-img-title">Demolition Lovers 🌹</span>
+              <span class="vip-img-subtitle">Sweet Revenge Vibe</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="modal-love-btn" class="btn-punk-primary">
+            <span>🌹 ¡TE AMO HASTA LA ETERNIDAD, ITALO! ⚡</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

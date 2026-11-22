@@ -1,0 +1,1480 @@
+/* ==========================================================================
+   HEIDY & ITALO • THREE CHEERS FOR 365 DAYS OF SWEET LOVE
+   Aesthetic: My Chemical Romance (Three Cheers for Sweet Revenge)
+   Post-Punk / Punk Rock Manchester de La Oroya
+   ========================================================================== */
+
+:root {
+  --color-bg-deep: #070707;
+  --color-bg-card: #121212;
+  --color-bg-card-alt: #181818;
+  --color-blood-red: #B71C1C;
+  --color-bright-red: #D32F2F;
+  --color-crimson: #E53935;
+  --color-dark-crimson: #880E4F;
+  --color-rose-deep: #7F0000;
+  --color-chalk-white: #F5F5F0;
+  --color-parchment: #EBE5D8;
+  --color-silver-metal: #B0BEC5;
+  --color-metal-dark: #37474F;
+
+  --font-gothic: 'Cinzel Decorative', serif;
+  --font-punk: 'Special Elite', cursive;
+  --font-stencil: 'Oswald', sans-serif;
+  --font-letter: 'Courier Prime', monospace;
+  --font-hand: 'Caveat', cursive;
+
+  --border-grunge: 2px solid rgba(229, 57, 53, 0.45);
+  --shadow-blood: 0 10px 30px rgba(183, 28, 28, 0.45);
+  --shadow-dark: 0 15px 40px rgba(0, 0, 0, 0.85);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-bg-deep);
+  color: var(--color-chalk-white);
+  font-family: var(--font-letter);
+  overflow-x: hidden;
+  position: relative;
+  background-image: 
+    radial-gradient(circle at 50% 15%, rgba(183, 28, 28, 0.22) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(136, 14, 79, 0.15) 0%, transparent 50%),
+    linear-gradient(180deg, #070707 0%, #101010 50%, #050505 100%);
+  background-attachment: fixed;
+}
+
+/* Grano y textura punk de fondo */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   CANVAS DE PARTÍCULAS (PÉTALOS DE ROSA, CONFETI NEGRO Y PÚAS)
+   ========================================================================== */
+#punk-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 55;
+}
+
+/* ==========================================================================
+   REPRODUCTOR DE VINILO FLOTANTE (MOTORAMA)
+   ========================================================================== */
+.music-player-container {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(14, 14, 14, 0.88);
+  border: 1px solid rgba(229, 57, 53, 0.5);
+  border-radius: 40px;
+  padding: 6px 16px 6px 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(183, 28, 28, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, border-color 0.3s;
+}
+
+.music-player-container:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-bright-red);
+}
+
+.vinyl-record-widget {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at center,
+    #111 0px,
+    #111 2px,
+    #222 3px,
+    #050505 4px
+  );
+  border: 2px solid #222;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.vinyl-disc.spinning {
+  animation: spinVinyl 3.2s linear infinite;
+}
+
+@keyframes spinVinyl {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.vinyl-label {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-bright-red) 30%, #7F0000 100%);
+  border: 1.5px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FFF;
+}
+
+.song-info-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.song-status-icon {
+  font-size: 1.1rem;
+  animation: pulseIcon 1.5s infinite alternate;
+}
+
+@keyframes pulseIcon {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--color-crimson)); }
+  100% { transform: scale(1.15); filter: drop-shadow(0 0 6px var(--color-bright-red)); }
+}
+
+.song-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-title {
+  font-family: var(--font-stencil);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--color-chalk-white);
+  line-height: 1.1;
+}
+
+.song-artist {
+  font-size: 0.68rem;
+  color: var(--color-silver-metal);
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   VISTAS DE PANTALLA Y TRANSICIÓN
+   ========================================================================== */
+.screen-view {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 10;
+}
+
+.screen-view.active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   PANTALLA 1: INTRODUCCIÓN MCR ("THE REVENGE GATE")
+   ========================================================================== */
+#intro-screen {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.intro-content {
+  max-width: 650px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeSlideUp 1s ease-out;
+}
+
+@keyframes fadeSlideUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.mcr-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-stencil);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--color-crimson);
+  background: rgba(183, 28, 28, 0.15);
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  padding: 6px 18px;
+  border-radius: 20px;
+  text-shadow: 0 0 10px rgba(229, 57, 53, 0.6);
+}
+
+.cross-icon {
+  color: var(--color-bright-red);
+}
+
+.album-logo-box {
+  margin: 10px 0;
+}
+
+.band-style-logo {
+  font-family: var(--font-stencil);
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  color: var(--color-silver-metal);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.main-title-gothic {
+  font-family: var(--font-gothic);
+  font-size: clamp(2.3rem, 6vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #FFFFFF;
+  text-shadow: 
+    0 0 20px rgba(183, 28, 28, 0.8),
+    3px 3px 0px #7F0000,
+    -1px -1px 0 #000;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.album-subtitle {
+  font-family: var(--font-punk);
+  font-size: clamp(0.95rem, 2.8vw, 1.3rem);
+  color: var(--color-crimson);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(229, 57, 53, 0.5);
+}
+
+.intro-artwork-wrapper {
+  position: relative;
+  margin: 15px 0;
+}
+
+.album-art-frame {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 3px solid var(--color-bright-red);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(183, 28, 28, 0.5);
+  transform: rotate(-1.5deg);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.album-art-frame:hover {
+  transform: rotate(0deg) scale(1.04);
+}
+
+.intro-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.1) saturate(1.1);
+}
+
+.intro-wedding-tag {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 14px;
+  background: #111;
+  border: 1px dashed var(--color-crimson);
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.wedding-date-label {
+  font-family: var(--font-stencil);
+  font-size: 0.82rem;
+  color: var(--color-silver-metal);
+  letter-spacing: 1.5px;
+}
+
+.anniversary-number {
+  font-family: var(--font-gothic);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-bright-red);
+  letter-spacing: 2px;
+}
+
+.intro-message-preview {
+  font-family: var(--font-letter);
+  font-size: 1rem;
+  color: var(--color-parchment);
+  max-width: 480px;
+  line-height: 1.5;
+  margin: 6px 0 14px;
+}
+
+.btn-punk-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 50%, #7F0000 100%);
+  color: #FFFFFF;
+  font-family: var(--font-stencil);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 35px;
+  border: 2px solid #FFF;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(183, 28, 28, 0.6), 0 0 15px rgba(255, 23, 68, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s;
+  animation: revengeGlow 2.5s infinite alternate;
+}
+
+@keyframes revengeGlow {
+  0% { transform: scale(1); box-shadow: 0 8px 25px rgba(183, 28, 28, 0.5); }
+  100% { transform: scale(1.02); box-shadow: 0 12px 35px rgba(229, 57, 53, 0.8), 0 0 25px rgba(255, 23, 68, 0.6); }
+}
+
+.btn-punk-primary:hover {
+  transform: translateY(-3px) scale(1.04);
+  filter: brightness(1.15);
+}
+
+.btn-punk-primary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.intro-footer-hint {
+  font-size: 0.85rem;
+  color: var(--color-silver-metal);
+  font-family: var(--font-punk);
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   PANTALLA 2: ESCENARIO INTERACTIVO (STAGE SCREEN)
+   ========================================================================== */
+#stage-screen {
+  padding-bottom: 80px;
+}
+
+/* Barra Superior de Marcador Punk */
+.punk-header-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.94);
+  border-bottom: 2px solid rgba(229, 57, 53, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.counter-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #141414;
+  border: 2px solid var(--color-bright-red);
+  padding: 6px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(183, 28, 28, 0.35);
+}
+
+.badge-skull-icon {
+  font-size: 1.6rem;
+  animation: bobGuitar 2s infinite ease-in-out alternate;
+}
+
+@keyframes bobGuitar {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+.badge-texts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.badge-title {
+  font-family: var(--font-stencil);
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  color: var(--color-silver-metal);
+  text-transform: uppercase;
+}
+
+.badge-counter {
+  font-family: var(--font-gothic);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-bright-red);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(229, 57, 53, 0.7);
+}
+
+.badge-status-ring {
+  font-size: 1.25rem;
+}
+
+.progress-bar-container {
+  width: 100%;
+  max-width: 420px;
+  height: 10px;
+  background: #222;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7F0000 0%, #D32F2F 50%, #FF1744 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 12px var(--color-bright-red);
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Transición / Loader de Acorde Inicial */
+.stage-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 20px;
+  transition: opacity 0.5s ease;
+}
+
+.stage-loader.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-cassette {
+  width: 180px;
+  height: 110px;
+  background: #1c1c1c;
+  border: 3px solid var(--color-bright-red);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(183, 28, 28, 0.4);
+}
+
+.cassette-tape-spin {
+  width: 50px;
+  height: 30px;
+  border: 2px dashed #FFF;
+  border-radius: 15px;
+  animation: spinTape 1.2s linear infinite;
+}
+
+@keyframes spinTape {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cassette-title {
+  font-family: var(--font-stencil);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  color: var(--color-silver-metal);
+  margin-top: 10px;
+}
+
+.loader-text {
+  font-family: var(--font-punk);
+  font-size: 1.1rem;
+  color: var(--color-parchment);
+  letter-spacing: 1px;
+}
+
+/* Contenedor Principal del Escenario */
+.main-stage-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 30px auto;
+  padding: 0 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-stage-container.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   COLUMNA IZQUIERDA: TOCADISCOS Y ARTE INTERACTIVO
+   ========================================================================== */
+.stage-turntable-column {
+  flex: 0 0 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 100px;
+}
+
+.punk-speech-bubble {
+  background: #FFFFFF;
+  color: #111111;
+  font-family: var(--font-punk);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 2px solid var(--color-bright-red);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 320px;
+  position: relative;
+  animation: floatBubble 3s ease-in-out infinite;
+}
+
+.punk-speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: var(--color-bright-red) transparent;
+  display: block;
+  width: 0;
+}
+
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.turntable-interactive-box {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle at center, #1E1E1E 0%, #0A0A0A 80%);
+  border: 3px solid var(--color-bright-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9), 0 0 30px rgba(183, 28, 28, 0.45);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.turntable-interactive-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(229, 57, 53, 0.65);
+}
+
+.turntable-interactive-box:active {
+  transform: scale(0.95);
+}
+
+.vinyl-stage-disc {
+  width: 290px;
+  height: 290px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at center,
+    #0E0E0E 0px,
+    #0E0E0E 3px,
+    #252525 4px,
+    #050505 5px
+  );
+  border: 2px solid #2A2A2A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spinVinyl 6s linear infinite;
+}
+
+.vinyl-center-art {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--color-bright-red);
+  box-shadow: 0 0 20px rgba(229, 57, 53, 0.8);
+}
+
+.turntable-center-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.turntable-needle-arm {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  width: 12px;
+  height: 80px;
+  background: linear-gradient(180deg, #E0E0E0 0%, #757575 100%);
+  border-radius: 4px;
+  transform: rotate(-25deg);
+  transform-origin: top center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+.stage-sub-info {
+  margin-top: 24px;
+  text-align: center;
+  max-width: 320px;
+}
+
+.tape-label-oroya {
+  font-family: var(--font-stencil);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: var(--color-bright-red);
+  background: rgba(183, 28, 28, 0.15);
+  border: 1px dashed var(--color-crimson);
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.stage-instructions {
+  font-size: 0.88rem;
+  color: var(--color-silver-metal);
+  line-height: 1.4;
+}
+
+.stage-instructions strong {
+  color: var(--color-chalk-white);
+}
+
+/* ==========================================================================
+   COLUMNA DERECHA: CARTA DE AMOR PUNK (MCR STYLE)
+   ========================================================================== */
+.stage-letter-column {
+  flex: 1;
+  max-width: 720px;
+  width: 100%;
+}
+
+.punk-letter-card {
+  background: linear-gradient(145deg, #161616 0%, #0E0E0E 100%);
+  border: 2px solid rgba(229, 57, 53, 0.5);
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(183, 28, 28, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de borde rasgado superior */
+.punk-letter-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #B71C1C 0%, #FF1744 50%, #B71C1C 100%);
+}
+
+.card-stencil-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.mcr-stamp {
+  font-family: var(--font-stencil);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--color-bright-red);
+}
+
+.date-stamp {
+  font-family: var(--font-letter);
+  font-size: 0.82rem;
+  color: var(--color-silver-metal);
+  letter-spacing: 1px;
+}
+
+.letter-main-heading {
+  font-family: var(--font-gothic);
+  font-size: clamp(1.6rem, 3.8vw, 2.3rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #FFFFFF;
+  text-shadow: 0 0 15px rgba(229, 57, 53, 0.6);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.letter-dedication-sub {
+  font-family: var(--font-punk);
+  font-size: 1.1rem;
+  color: var(--color-silver-metal);
+  margin-bottom: 22px;
+}
+
+.letter-dedication-sub strong {
+  color: var(--color-bright-red);
+}
+
+.letter-body-prose {
+  font-family: var(--font-letter);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--color-parchment);
+  margin-bottom: 26px;
+}
+
+.letter-body-prose p {
+  margin-bottom: 16px;
+}
+
+.letter-body-prose em {
+  color: #FFFFFF;
+  font-style: italic;
+  text-shadow: 0 0 5px rgba(229, 57, 53, 0.4);
+}
+
+/* Cuadro Especial de la Canción Motorama */
+.motorama-quote-box {
+  background: rgba(183, 28, 28, 0.12);
+  border: 1px solid rgba(229, 57, 53, 0.45);
+  border-left: 4px solid var(--color-bright-red);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 24px 0;
+}
+
+.motorama-badge {
+  font-family: var(--font-stencil);
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  color: var(--color-bright-red);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.motorama-lyric {
+  font-family: var(--font-punk);
+  font-size: 1.15rem;
+  color: #FFFFFF;
+  line-height: 1.45;
+  text-shadow: 0 0 8px rgba(229, 57, 53, 0.5);
+  margin-bottom: 10px;
+}
+
+.motorama-translation-box {
+  margin: 14px 0 12px 0;
+  padding: 14px 16px;
+  border-top: 1px dashed rgba(229, 57, 53, 0.4);
+  background: rgba(10, 10, 10, 0.55);
+  border-radius: 8px;
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.translation-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.trans-icon {
+  font-size: 1.1rem;
+}
+
+.trans-title {
+  font-family: var(--font-stencil);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--color-bright-red);
+}
+
+.translation-text {
+  font-family: var(--font-letter);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.translation-text em {
+  color: #FFEAEA;
+  font-style: italic;
+  text-shadow: 0 0 6px rgba(229, 57, 53, 0.35);
+}
+
+.translation-meaning {
+  font-family: var(--font-letter);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--color-parchment);
+}
+
+.motorama-credit {
+  font-size: 0.82rem;
+  color: var(--color-silver-metal);
+  display: block;
+  margin-top: 10px;
+}
+
+/* Marco Doble de Fotos (Boda & Punk) */
+.photos-duo-frame {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.polaroid-item {
+  background: #FFFFFF;
+  color: #111111;
+  padding: 10px 10px 24px 10px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  max-width: 230px;
+  width: 100%;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.polaroid-wedding {
+  transform: rotate(-3deg);
+}
+
+.polaroid-punk {
+  transform: rotate(3deg);
+}
+
+.polaroid-item:hover {
+  transform: rotate(0deg) scale(1.08);
+  z-index: 10;
+  box-shadow: 0 15px 40px rgba(183, 28, 28, 0.4);
+}
+
+.polaroid-img-wrapper {
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #111;
+}
+
+.polaroid-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  display: block;
+}
+
+.polaroid-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.polaroid-caption {
+  font-family: var(--font-punk);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
+  color: #222;
+}
+
+/* Botones de Acción de la Carta */
+.stage-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 30px 0 20px 0;
+}
+
+.action-btn {
+  flex: 1;
+  min-width: 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 30px;
+  font-family: var(--font-stencil);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.btn-rain {
+  background: #222;
+  color: #FFF;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-rain:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-bright-red);
+  background: #2A2A2A;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.btn-vault.locked {
+  background: linear-gradient(135deg, #1F1F1F, #121212);
+  color: #888;
+  border-color: #333;
+  cursor: pointer;
+}
+
+.btn-vault.locked.shaking {
+  animation: shakeButton 0.4s ease-in-out;
+}
+
+@keyframes shakeButton {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.btn-vault.unlocked {
+  background: linear-gradient(135deg, #B71C1C, #D32F2F);
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 25px rgba(229, 57, 53, 0.8), 0 8px 25px rgba(0, 0, 0, 0.6);
+  animation: revengeGlow 2s infinite alternate;
+}
+
+.vault-badge {
+  font-size: 0.78rem;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.letter-signature-block {
+  text-align: right;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 18px;
+}
+
+.sig-note {
+  font-family: var(--font-letter);
+  font-size: 0.9rem;
+  color: var(--color-silver-metal);
+}
+
+.sig-author {
+  font-family: var(--font-gothic);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--color-bright-red);
+  text-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
+  margin-top: 2px;
+}
+
+.sig-date {
+  font-family: var(--font-punk);
+  font-size: 0.85rem;
+  color: var(--color-silver-metal);
+}
+
+/* ==========================================================================
+   ELEMENTOS FLOTANTES INTERACTIVOS (PÚAS, ROSAS, CASSETTES)
+   ========================================================================== */
+.floating-rock-item {
+  position: fixed;
+  cursor: pointer;
+  user-select: none;
+  z-index: 65;
+  filter: drop-shadow(0 6px 15px rgba(183, 28, 28, 0.65));
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-rock-item:hover {
+  transform: scale(1.3) rotate(15deg);
+}
+
+/* Púa de Guitarra */
+.pick-icon-svg {
+  width: 52px;
+  height: 52px;
+  animation: floatPick 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes floatPick {
+  0% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-16px) rotate(10deg); }
+  100% { transform: translateY(0) rotate(-10deg); }
+}
+
+/* Rosa Gótica */
+.rose-item-svg {
+  width: 58px;
+  height: 58px;
+  animation: floatRose 5s ease-in-out infinite alternate;
+}
+
+@keyframes floatRose {
+  0% { transform: translateY(0) rotate(8deg); }
+  50% { transform: translateY(-18px) rotate(-8deg); }
+  100% { transform: translateY(0) rotate(8deg); }
+}
+
+/* Mini Cassette de Motorama */
+.cassette-item-svg {
+  width: 64px;
+  height: 44px;
+  animation: floatCassette 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes floatCassette {
+  0% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+  100% { transform: translateY(0) rotate(-5deg); }
+}
+
+/* Feedback flotante al atrapar "+15 Días 🖤" */
+.rock-feedback-text {
+  position: fixed;
+  font-family: var(--font-stencil);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #B71C1C, #D32F2F);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #FFF;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 0 10px rgba(229, 57, 53, 0.8);
+  pointer-events: none;
+  z-index: 120;
+  animation: feedbackRise 1.2s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes feedbackRise {
+  0% { opacity: 0; transform: translateY(10px) scale(0.7); }
+  20% { opacity: 1; transform: translateY(0) scale(1.1); }
+  80% { opacity: 1; transform: translateY(-25px) scale(1); }
+  100% { opacity: 0; transform: translateY(-45px) scale(0.8); }
+}
+
+/* ==========================================================================
+   MODAL FINAL: THE DEMOLITION LOVERS VAULT (A LOS 365 DÍAS)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.modal-backdrop.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-box-punk {
+  background: linear-gradient(145deg, #181818, #0C0C0C);
+  border: 3px solid var(--color-bright-red);
+  border-radius: 24px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 40px rgba(183, 28, 28, 0.5);
+  animation: modalEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalEnter {
+  0% { transform: scale(0.85) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #FFF;
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.modal-close-button:hover {
+  transform: rotate(90deg) scale(1.2);
+  color: var(--color-bright-red);
+}
+
+.modal-header-banner {
+  padding: 28px 24px 16px;
+  text-align: center;
+  border-bottom: 1px dashed rgba(229, 57, 53, 0.4);
+}
+
+.mcr-gothic-cross {
+  color: var(--color-bright-red);
+  font-size: 1.2rem;
+  letter-spacing: 6px;
+  margin-bottom: 6px;
+}
+
+.modal-title {
+  font-family: var(--font-gothic);
+  font-size: clamp(1.4rem, 3.2vw, 1.9rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #FFFFFF;
+  text-shadow: 0 0 15px rgba(229, 57, 53, 0.7);
+  margin-bottom: 8px;
+}
+
+.modal-badge-unlocked {
+  display: inline-block;
+  background: linear-gradient(90deg, #B71C1C, #D32F2F);
+  color: #FFFFFF;
+  font-family: var(--font-stencil);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 16px;
+  border-radius: 14px;
+}
+
+.modal-scrollable-body {
+  padding: 24px 28px 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Homenaje MCR */
+.mcr-tribute-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(183, 28, 28, 0.15);
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.mcr-art-side {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--color-bright-red);
+  flex-shrink: 0;
+}
+
+.mcr-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mcr-quote-text {
+  font-family: var(--font-punk);
+  font-size: 1rem;
+  color: #FFF;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.mcr-quote-source {
+  font-size: 0.78rem;
+  color: var(--color-silver-metal);
+}
+
+/* Carta Secreta Completa */
+.secret-prose-letter {
+  background: #111;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 22px;
+  font-family: var(--font-letter);
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--color-parchment);
+}
+
+.secret-prose-letter h3 {
+  font-family: var(--font-punk);
+  font-size: 1.2rem;
+  color: var(--color-bright-red);
+  margin-bottom: 12px;
+}
+
+.secret-prose-letter p {
+  margin-bottom: 12px;
+}
+
+.secret-prose-letter .final-highlight {
+  font-size: 1.08rem;
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(229, 57, 53, 0.6);
+  border-left: 3px solid var(--color-bright-red);
+  padding-left: 14px;
+  margin-top: 16px;
+}
+
+/* Galería VIP Pass con Encuadre Completo y Proporción Retrato */
+.vip-pass-card {
+  background: #151515;
+  border: 2px solid rgba(229, 57, 53, 0.45);
+  border-radius: 16px;
+  padding: 20px 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(183, 28, 28, 0.15);
+}
+
+.vip-header {
+  font-family: var(--font-stencil);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-align: center;
+  color: var(--color-silver-metal);
+  margin-bottom: 18px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-bottom: 10px;
+}
+
+.vip-images-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.vip-img-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #0E0E0E;
+  border-radius: 12px;
+  padding: 10px 10px 14px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+}
+
+.vip-img-box:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: var(--color-bright-red);
+  box-shadow: 0 12px 28px rgba(183, 28, 28, 0.45);
+}
+
+.vip-img-frame {
+  width: 100%;
+  height: 270px;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+  border: 1.5px solid rgba(229, 57, 53, 0.4);
+}
+
+.vip-img-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%; /* Garantiza que los rostros y cuerpos estén 100% visibles */
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.vip-img-box:hover .vip-img-frame img {
+  transform: scale(1.08);
+}
+
+.vip-img-title {
+  font-family: var(--font-stencil);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.vip-img-subtitle {
+  font-family: var(--font-punk);
+  font-size: 0.76rem;
+  color: var(--color-silver-metal);
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD Y OPTIMIZACIÓN MÓVIL
+   ========================================================================== */
+@media (max-width: 900px) {
+  .main-stage-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stage-turntable-column {
+    position: static;
+    flex: none;
+    width: 100%;
+  }
+
+  .turntable-interactive-box {
+    width: 270px;
+    height: 270px;
+  }
+
+  .vinyl-stage-disc {
+    width: 245px;
+    height: 245px;
+  }
+
+  .vinyl-center-art {
+    width: 120px;
+    height: 120px;
+  }
+
+  .vip-images-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .vip-img-frame {
+    height: 330px;
+  }
+}
+
+@media (max-width: 600px) {
+  .music-player-container {
+    top: 10px;
+    right: 10px;
+    padding: 4px 12px 4px 6px;
+  }
+
+  .song-title {
+    font-size: 0.75rem;
+  }
+
+  .song-artist {
+    font-size: 0.6rem;
+  }
+
+  .punk-letter-card {
+    padding: 24px 18px;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .polaroid-item {
+    max-width: 100%;
+  }
+}
