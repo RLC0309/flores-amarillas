@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HEIDY & ITALO • THREE CHEERS FOR 365 DAYS OF SWEET LOVE
+   HEYDI & ITALO • THREE CHEERS FOR 365 DAYS OF SWEET LOVE
    Lógica Interactiva, Web Audio API, Canvas de Rosas y Mecánica de 365 Días
    ========================================================================== */
 
@@ -652,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
   modalLoveBtn.addEventListener('click', () => {
     vaultModal.classList.remove('active');
     burstParticles(width / 2, height / 2, 60, 'rose');
-    showFloatingFeedback("¡Heidy & Italo por siempre! 🖤🌹⚡", width / 2, height / 2);
+    showFloatingFeedback("¡Heydi & Italo por siempre! 🖤🌹⚡", width / 2, height / 2);
   });
 
   // Clic libre en el fondo genera sutil chispa de rosa
