@@ -1050,12 +1050,12 @@ body::after {
   }
 }
 
-/* Marco Doble de Fotos (Boda & Punk) */
-.photos-duo-frame {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
-  justify-content: center;
+/* Galería Polaroid de Fotos (Compromiso, Boda, La Oroya, Punk) */
+.photos-polaroid-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-items: center;
   margin: 30px 0;
 }
 
@@ -1065,13 +1065,21 @@ body::after {
   padding: 10px 10px 24px 10px;
   border-radius: 4px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-  max-width: 230px;
+  max-width: 240px;
   width: 100%;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.polaroid-wedding {
+.polaroid-compromiso {
   transform: rotate(-3deg);
+}
+
+.polaroid-wedding {
+  transform: rotate(2deg);
+}
+
+.polaroid-oroya {
+  transform: rotate(-2deg);
 }
 
 .polaroid-punk {
@@ -1079,9 +1087,9 @@ body::after {
 }
 
 .polaroid-item:hover {
-  transform: rotate(0deg) scale(1.08);
+  transform: rotate(0deg) scale(1.06);
   z-index: 10;
-  box-shadow: 0 15px 40px rgba(183, 28, 28, 0.4);
+  box-shadow: 0 15px 40px rgba(183, 28, 28, 0.45);
 }
 
 .polaroid-img-wrapper {
@@ -1097,13 +1105,6 @@ body::after {
   height: 100%;
   object-fit: cover;
   object-position: center 15%;
-  display: block;
-}
-
-.polaroid-img-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   display: block;
 }
 
@@ -1594,16 +1595,25 @@ body::after {
   }
 
   .vip-images-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .vip-img-frame {
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .vip-images-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 18px;
   }
 
   .vip-img-frame {
     height: 330px;
   }
-}
 
-@media (max-width: 600px) {
   .music-player-container {
     top: 10px;
     right: 10px;
